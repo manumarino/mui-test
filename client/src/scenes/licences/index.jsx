@@ -6,19 +6,16 @@ import {
 
 
 
-const Dashboard = () => {
-  
+
+const Licences = () => {
   
   return (
     <Box sx={{m: "2rem"}}>
 
-      Dash
-
+      Licencias
       
     </Box>
   );
 }
 
-export default Dashboard;
-
-
+export default Licences;

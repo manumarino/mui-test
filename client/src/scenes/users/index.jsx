@@ -6,19 +6,16 @@ import {
 
 
 
-const Dashboard = () => {
-  
+
+const Users = () => {
   
   return (
     <Box sx={{m: "2rem"}}>
 
-      Dash
-
+      Usuarios
       
     </Box>
   );
 }
 
-export default Dashboard;
-
-
+export default Users;

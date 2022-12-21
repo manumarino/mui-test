@@ -7,7 +7,11 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import {themeSettings} from "theme";
 import Layout from "scenes/layout";
 import Dashboard from "scenes/debdash";
-import Products from "scenes/companies";
+import Companies from "scenes/companies";
+import Branches from "scenes/branches";
+import Licences from "scenes/licences";
+import Users from "scenes/users";
+import MobileConnection from "scenes/mobile-connection";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -20,10 +24,13 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to="/debdash" replace />} />
-            <Route path="/debdash" element={<Dashboard />} />
-            <Route path="/companies" element={<Products />} />
-
-
+            <Route path="/debdash/*" element={<Dashboard />} />
+            <Route path="/companies/*" element={<Companies />} />
+            <Route path="/branches/*" element={<Branches />} />
+            <Route path="/licences/*" element={<Licences />} />
+            <Route path="/users/*" element={<Users />} />
+            <Route path="/mobile-connection/*" element={<MobileConnection />} />
+            
           </Route>
         </Routes>
       </ThemeProvider>

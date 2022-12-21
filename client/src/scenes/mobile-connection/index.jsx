@@ -6,19 +6,16 @@ import {
 
 
 
-const Dashboard = () => {
-  
+
+const MobileConnection = () => {
   
   return (
     <Box sx={{m: "2rem"}}>
 
-      Dash
-
+      Conexión con Mobile
       
     </Box>
   );
 }
 
-export default Dashboard;
-
-
+export default MobileConnection;
