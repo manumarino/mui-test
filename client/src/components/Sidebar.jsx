@@ -40,11 +40,7 @@ import FlexBetween from './FlexBetween';
 
 
 const navItems = [
-    {
-        text: "DebDash",
-        icon: <HomeOutlined/>,
-        path: "debdash"
-    },
+    
     {
         text: "Compañìas",
         icon: <Apartment/>,
@@ -115,7 +111,12 @@ const Sidebar = ({
                         alt="profile"
                         src={require('../img/logo.svg').default}
                         width="100%"
-                        sx={{objectFit: "cover"}} /> 
+                        sx={{objectFit: "cover"}}
+                        style={{cursor:'pointer'}}
+                        onClick={() => {
+                            navigate(`/debdash`);                            
+                            }}
+                        /> 
                         
                         {!isNonMobile && (
                             <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
