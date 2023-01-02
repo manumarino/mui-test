@@ -10,7 +10,7 @@ const Dashboard = () => {
   
   
   return (
-    <Box sx={{m: "2rem"}}>
+    <Box>
 
       Dash
 

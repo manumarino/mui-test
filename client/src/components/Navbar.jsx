@@ -6,18 +6,23 @@ import {
      Search,
      SettingsOutlined,
      ArrowDropDownOutlined,
+     ChevronLeft,
  } from '@mui/icons-material';
  import FlexBetween from "components/FlexBetween";
  import { useDispatch } from 'react-redux';
  import { setMode } from 'state';
  import profileImage from "../assets/profile.png";
-import { AppBar, Toolbar, useTheme, IconButton, InputBase, Button, Box, Menu, MenuItem, Typography } from '@mui/material';
+ import { Toolbar, useTheme, IconButton, InputBase, Button, Box, Menu, MenuItem, Typography, styled } from '@mui/material';
+ import MuiAppBar from '@mui/material/AppBar';
 
+ 
 
 const Navbar = ({
+    
     user,
-    isSidebarOpen,
-    setIsSidebarOpen,
+    open,
+    setOpen,
+    drawerWidth,
 }) => {
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -27,20 +32,54 @@ const Navbar = ({
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
 
+    const iconSlided = <IconButton 
+                        style={{display: !open ? 'none' : 'flex'}}
+                        onClick={() => setOpen(!open)}>
+                            <MenuIcon sx={{fontSize: "1.3rem"}} />              
+                        </IconButton>
+    
+    const iconNotSlided = <IconButton 
+                            style={{display: open ? 'none' : 'flex'}}
+                            onClick={() => setOpen(!open)}>
+                                <ChevronLeft sx={{fontSize: "1.3rem"}} />              
+                            </IconButton>
+
+    const AppBar = styled(MuiAppBar, {
+        shouldForwardProp: (prop) => prop !== 'open',
+    })(({ theme, open }) => ({
+        transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+        }),
+        ...(!open && {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: `${drawerWidth}px`,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        }),
+    }));
+    
+
+    
+
   return (
   <AppBar
-  sx={{
-    position: "static",
-    background: "none",
-    boxShadow: "none",
-  }}
+        position="fixed"
+        sx={{
+            background: "none",
+            boxShadow: "none",
+        }}
+        open={open}
   >
     <Toolbar sx={{ justifyContent:"space-between" }}>
         {/* LEFT SIDE */}
         <FlexBetween gap="1.5rem">
-            <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                <MenuIcon />              
-            </IconButton>
+            
+            {iconSlided}
+            {iconNotSlided}
+
             <FlexBetween
                 backgroundColor={theme.palette.background.alt}
                 borderRadius="9px"
@@ -58,13 +97,13 @@ const Navbar = ({
         <FlexBetween gap="1.5rem">
             <IconButton onClick={() => dispatch(setMode())}>
                 {theme.palette.mode === 'dark' ? (
-                    <LightModeOutlined sx={{fontSize: "25px"}} />
+                    <LightModeOutlined sx={{fontSize: "1.3rem"}} />
                 ) : (
-                    <DarkModeOutlined sx={{fontSize: "25px"}} />
+                    <DarkModeOutlined sx={{fontSize: "1.3rem"}} />
                 )}
             </IconButton>
             <IconButton>
-                <SettingsOutlined sx={{fontSize: "25px"}} />
+                <SettingsOutlined sx={{fontSize: "1.3rem"}} />
             </IconButton>
 
             <FlexBetween>
