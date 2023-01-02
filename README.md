@@ -1,4 +1,5 @@
 # mui-test
-# Cambios-1.3-Logo-deb-linkeado
+# Cambios-1.4-Fix-animacion-sidebar
 
-Se elimina el acceso al debDash (Home) desde la lista de la Sidebar y se linkea ese componente (Home / debDash) al logo de DebMedia.
+Se corrige un error en la animacion de apertura y cierre de la Sidebar, modificando levemente la estructura y logica del Layout del dashboard. Por default se muestra abierta.
+Proximo feature: poder modificar la duracion de la transicion de la apertura.
