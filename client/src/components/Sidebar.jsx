@@ -93,6 +93,7 @@ const Sidebar = ({
                 width: drawerWidth,
                 boxSizing: 'border-box',
                 bgcolor: theme.palette.primary[500],
+                borderWidth: 0,
                 },
             }}
             variant="persistent"
