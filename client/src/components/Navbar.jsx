@@ -28,6 +28,7 @@ import {
   MenuList,
   ListItem,
   Divider,
+  Avatar,
 } from "@mui/material";
 
 const user = {
@@ -100,13 +101,14 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 textTransform: "none",
                 gap: "1rem",
               }}>
+                <Avatar>
               <Person
                 sx={{
                   fontSize: "25px",
-                  borderRadius: "100%",
-                  backgroundColor: theme.palette.primary[100],
                   color: theme.palette.primary[800],
                 }}></Person>
+
+                </Avatar>
 
               <Box textAlign="left">
                 <Typography
