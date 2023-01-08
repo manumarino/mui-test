@@ -58,7 +58,14 @@ const Navbar = ({
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        }),
+        })
+    }));
+
+    const ToolbarB = styled(Toolbar)(({theme}) => ({
+        [theme.breakpoints.up('xs')]: {
+            minHeight: "50px",
+            backgroundColor: "red"
+            } 
     }));
     
 
@@ -73,7 +80,7 @@ const Navbar = ({
         }}
         open={open}
   >
-    <Toolbar sx={{ justifyContent:"space-between" }}>
+    <ToolbarB sx={{ justifyContent:"space-between" }}>
         {/* LEFT SIDE */}
         <FlexBetween gap="1.5rem">
             
@@ -140,7 +147,7 @@ const Navbar = ({
             </FlexBetween>
 
         </FlexBetween>
-    </Toolbar>
+    </ToolbarB>
   </AppBar>
   );
 }
