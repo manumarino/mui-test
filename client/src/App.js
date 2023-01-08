@@ -12,29 +12,38 @@ import Branches from "scenes/branches";
 import Licences from "scenes/licences";
 import Users from "scenes/users";
 import MobileConnection from "scenes/mobile-connection";
+import {I18nextProvider} from "react-i18next";
+import i18next from "i18next";
+
+i18next.init({
+  interpolation: {escapeValue: false},
+});
 
 function App() {
+ 
+
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return (
     <div className="app">
-      <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Navigate to="/debdash" replace />} />
-            <Route path="/debdash/*" element={<Dashboard />} />
-            <Route path="/companies/*" element={<Companies />} />
-            <Route path="/branches/*" element={<Branches />} />
-            <Route path="/licences/*" element={<Licences />} />
-            <Route path="/users/*" element={<Users />} />
-            <Route path="/mobile-connection/*" element={<MobileConnection />} />
-            
-          </Route>
-        </Routes>
-      </ThemeProvider>
-      </BrowserRouter>
+      <I18nextProvider i18n={i18next}>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<Navigate to="/debdash" replace />} />
+                <Route path="/debdash/*" element={<Dashboard />} />
+                <Route path="/companies/*" element={<Companies />} />
+                <Route path="/branches/*" element={<Branches />} />
+                <Route path="/licences/*" element={<Licences />} />
+                <Route path="/users/*" element={<Users />} />
+                <Route path="/mobile-connection/*" element={<MobileConnection />} />
+              </Route>
+            </Routes>
+          </ThemeProvider>
+        </BrowserRouter>
+      </I18nextProvider>
     </div>
   );
 }

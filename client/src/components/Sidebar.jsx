@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Box,
-    Divider,
     Drawer,
     IconButton,
     List,
@@ -9,25 +8,11 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Typhography,
-    Typography,
     useTheme
 } from "@mui/material";
 import {
-    SettingsOutlined,
     ChevronLeft,
     ChevronRightOutlined,
-    HomeOutlined,
-    ShoppingCartOutlined,
-    Groups2Outlined,
-    ReceiptLongOutlined,
-    PublicOutlined,
-    PointOfSaleOutlined,
-    TodayOutlined,
-    CalendarMonthOutlined,
-    AdminPanelSettingsOutlined,
-    TrendingUpOutlined,
-    PieChartOutlined,
     Store,
     HistoryEdu,
     PeopleAlt,
@@ -42,7 +27,7 @@ import FlexBetween from './FlexBetween';
 const navItems = [
     
     {
-        text: "Compañìas",
+        text: "Compañías",
         icon: <Apartment/>,
         path: "companies"
     },
@@ -86,33 +71,34 @@ const Sidebar = ({
 
   return (
     <Drawer 
-            sx={{
-                width: drawerWidth,
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                width: drawerWidth,
-                boxSizing: 'border-box',
-                bgcolor: theme.palette.primary[500],
-                borderWidth: 0,
-                },
-            }}
-            variant="persistent"
-            anchor="left"
-            open={!open}
+        sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+            bgcolor: theme.palette.primary[500],
+            borderWidth: 0,
+            },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={!open}
     >
+        
         <Box width="100%">
         <Box m="1.5rem 2rem 2rem 2rem">
             <FlexBetween color={theme.palette.secondary[200]} display="flex" alignItems="center">
                 <Box 
-                component="img"
-                alt="profile"
-                src={require('../img/logo.svg').default}
-                width="100%"
-                sx={{objectFit: "cover"}}
-                style={{cursor:'pointer'}}
-                onClick={() => {
-                    navigate(`/debdash`);                            
-                    }}
+                    component="img"
+                    alt="profile"
+                    src={require('../img/logo.svg').default}
+                    width="100%"
+                    sx={{objectFit: "cover"}}
+                    style={{cursor:'pointer'}}
+                    onClick={() => {
+                        navigate(`/debdash`);                            
+                        }}
                 /> 
                 
                 {!isNonMobile && (

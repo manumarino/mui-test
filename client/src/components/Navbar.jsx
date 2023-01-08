@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import {
      LightModeOutlined,
      DarkModeOutlined,
-     Menu as MenuIcon,
-     Search,
      SettingsOutlined,
      ArrowDropDownOutlined,
      ChevronLeft,
+     Language
  } from '@mui/icons-material';
+ import MenuIcon from '@mui/icons-material/Menu';
  import FlexBetween from "components/FlexBetween";
  import { useDispatch } from 'react-redux';
  import { setMode } from 'state';
- import profileImage from "../assets/profile.png";
- import { Toolbar, useTheme, IconButton, InputBase, Button, Box, Menu, MenuItem, Typography, styled } from '@mui/material';
+ import { Toolbar, useTheme, IconButton, Button, Box, Menu, MenuItem, styled } from '@mui/material';
  import MuiAppBar from '@mui/material/AppBar';
-
+ import {useTranslation} from "react-i18next";
+import LanguageSelector from './LanguageSelector';
  
 
 const Navbar = ({
@@ -24,11 +24,13 @@ const Navbar = ({
     setOpen,
     drawerWidth,
 }) => {
+    const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const isOpen = Boolean(anchorEl);
+    const id = isOpen ? 'simple-popover' : undefined;
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
 
@@ -101,40 +103,7 @@ const Navbar = ({
             <IconButton>
                 <SettingsOutlined sx={{fontSize: "1.3rem"}} />
             </IconButton>
-
-            <FlexBetween>
-                <Button onClick={handleClick} sx={{
-                    display: "flex", 
-                    justifyContent: "space-between", 
-                    alignItems: "center", 
-                    textTransform: "none", 
-                    gap: "1rem"}} >
-                    
-                    <Box
-                            component="img"
-                            alt="profile"
-                            src={profileImage}
-                            height="32px"
-                            width="32px"
-                            borderRadius="50%"
-                            sx={{objectFit: "cover"}}
-                    />
-                    <Box textAlign="left">
-                        <Typography fontWeight="bold" fontSize="0.85rem" sx={{color: theme.palette.secondary[100]}} >
-                            {user.name}
-                        </Typography>
-                        <Typography  fontSize="0.75rem" sx={{color: theme.palette.secondary[100]}} >
-                            {user.occupation}
-                        </Typography>
-                    </Box>
-                    <ArrowDropDownOutlined 
-                    sx={{color: theme.palette.secondary[200]}} />
-                </Button>
-                <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{vertical:"bottom", horizontal:"center"}}>
-                    <MenuItem onClick={handleClose}>Log Out</MenuItem>
-                </Menu>
-            </FlexBetween>
-
+            <LanguageSelector/>
         </FlexBetween>
     </ToolbarB>
   </AppBar>

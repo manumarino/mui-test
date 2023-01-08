@@ -9,9 +9,8 @@ const Header = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
     [theme.breakpoints.down('xl')]: {
-      minHeight: "45px"
-    },
-    backgroundColor: "red"
+      minHeight: "40px"
+    }
   }));
 
 function DrawerHeader() {
