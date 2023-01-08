@@ -63,8 +63,7 @@ const Navbar = ({
 
     const ToolbarB = styled(Toolbar)(({theme}) => ({
         [theme.breakpoints.down('xl')]: {
-            minHeight: "50px",
-            backgroundColor: "red"
+            minHeight: "55px"
             } 
     }));
     
@@ -87,17 +86,7 @@ const Navbar = ({
             {iconSlided}
             {iconNotSlided}
 
-            <FlexBetween
-                backgroundColor={theme.palette.background.alt}
-                borderRadius="9px"
-                gap="3rem"
-                p="0.1rem 1.5rem"
-            >
-                <InputBase placeholder="Search..." />
-                <IconButton>
-                    <Search />
-                </IconButton>
-            </FlexBetween>
+            
         </FlexBetween>
 
         {/* RIGHT SIDE */}
