@@ -1,4 +1,6 @@
 # mui-test
 # Cambios-1.4-Tabla
 
-Se crea el componente Tabla mediante el componente DataGrid
+-Fix en CSS del borde derecho de la Sidebar <br />
+-Se crea el componente Tabla mediante el componente DataGrid. <br />
+-Se agrega la posibilidad de filtrar filas por columnas. DataGrid solo acepta filtrar UNA COLUMNA a la vez. Para multiples filtros se debe usar la version Pro (paga).
