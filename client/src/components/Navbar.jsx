@@ -62,7 +62,7 @@ const Navbar = ({
     }));
 
     const ToolbarB = styled(Toolbar)(({theme}) => ({
-        [theme.breakpoints.up('xs')]: {
+        [theme.breakpoints.down('xl')]: {
             minHeight: "50px",
             backgroundColor: "red"
             } 
