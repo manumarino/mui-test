@@ -5,7 +5,7 @@ import DebModal from './DebModal'
 export default function DebModalButton({buttonText, children, modalProps}) {
   const [open, setOpen] = useState(false);
   const handleClose = () =>{
-    if(modalProps.onClose) modalProps.onClose();
+    if(typeof modalProps.onClose === "function") modalProps.onClose();
     setOpen(false);
   }
 
@@ -20,12 +20,7 @@ export default function DebModalButton({buttonText, children, modalProps}) {
     <DebModal
       open={open}
       onClose={handleClose}
-      onConfirm={modalProps.onConfirm}
-      onReject={modalProps.onReject}
-      confirmText={modalProps.confirmText}
-      rejectText={modalProps.rejectText}
-      headerText={modalProps.headerText}
-      contentText={modalProps.contentText}
+      {...modalProps}
       >
         {children}
       </DebModal>
