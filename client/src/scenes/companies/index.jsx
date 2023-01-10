@@ -59,7 +59,7 @@ function Companies() {
     const {data, isLoading} = useGetProductsQuery();
     const isNonMobile = useMediaQuery("(min-width: 1000px)");
   return (
-    <Box sx={{m: "2rem"}} >
+    <Box>
         <Header title="COMPAÑÍAS" subtitle="Listado de compañías" />
             <Box mt="20px" 
             display="grid" 

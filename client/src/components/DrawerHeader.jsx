@@ -8,6 +8,9 @@ const Header = styled('div')(({ theme }) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
+    [theme.breakpoints.down('xl')]: {
+      minHeight: "40px"
+    }
   }));
 
 function DrawerHeader() {

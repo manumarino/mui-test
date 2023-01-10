@@ -55,13 +55,13 @@ const Layout = () => {
         open={open}
         setOpen={setOpen}
         drawerWidth={drawerWidth}
+        
     />
     
     <Main open={open}>
       <DrawerHeader />
       <Outlet />
     </Main>
-    
     
     
   </Box>

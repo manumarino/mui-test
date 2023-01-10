@@ -4,13 +4,13 @@ export const tokensDark = {
       0: "#ffffff", // manually adjusted
       10: "#f6f6f6", // manually adjusted
       50: "#f0f0f0", // manually adjusted
-      100: "#ffccd9",
-          200: "#ff99b3",
-          300: "#ff668c",
-          400: "#ff3366",
-          500: "#ff0040",
-          600: "#cc0033",
-          700: "#990026",
+      100: "#e0e0e0",
+      200: "#c2c2c2",
+      300: "#a3a3a3",
+      400: "#858585",
+      500: "#666666",
+      600: "#525252",
+      700: "#3d3d3d",
           800: "#66001a",
           900: "#33000d",
       1000: "#000000", // manually adjusted
