@@ -37,10 +37,10 @@ function DebModal({
     if (typeof fn === "function") {
       setLoading(true);
       Promise.resolve(fn())
-        .then((result) => {
+        .then(() => {
           if (isFunction(onResponse)) onResponse();
         })
-        .finally((result) => {
+        .finally(() => {
           setLoading(false);
         });
     }
@@ -56,8 +56,6 @@ function DebModal({
         },
       }}
       onClose={() => handleAction(onClose)}
-      // fullWidth={true}
-      // maxWidth={"md"}
       {...props}>
       {isFunction(onClose) && (
         <Box sx={{ position: "relative" }}>
@@ -88,7 +86,8 @@ function DebModal({
           {isFunction(onConfirm) && (
             <Button
               variant={confirmButtonVariant}
-              onClick={() => handleAction(onConfirm)}>
+              onClick={() => handleAction(onConfirm)}
+              disabled={loading}>
               {confirmText}
               {loading && (
                 <CircularProgress
@@ -122,7 +121,7 @@ DebModal.propTypes = {
   headerText: PropTypes.string,
   /**  Texto de contenido */
   contentText: PropTypes.string,
-  /**  Callback cuando el modal se cierra por el botón de curz o haciendo click fuera del modal */
+  /**  Callback cuando se presiona el botón de curz o haciendo click fuera del modal */
   onClose: PropTypes.func.isRequired,
   /** Callback cuando se presiona el botón de confirmación
    * Si devuelve una promesa, muestra spinner de loading
