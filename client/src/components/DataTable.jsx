@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridCellParams } from "@mui/x-data-grid";
 import {useTranslation} from "react-i18next";
 import { useGetCustomersQuery } from "state/api";
 import { Box, useTheme } from "@mui/material";
@@ -56,7 +56,7 @@ function DataTable({rows, columns, loading}) {
             pageSize={pageSize}
             rowsPerPageOptions={[5, 10, 20]}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        
+
             //Filtros:
             components={{ Toolbar: GridToolbar }}
             onFilterModelChange={onFilterChange}

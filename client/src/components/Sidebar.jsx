@@ -118,7 +118,7 @@ const Sidebar = ({
                             setActive(path);
                             }}
                             sx={{
-                                backgroundColor: active === path ? theme.palette.secondary[700] : "transparent",
+                                backgroundColor: active === path ? theme.palette.primary[700] : "transparent",
                                 color: active === path 
                                 ? theme.palette.secondary[200]
                                 : theme.palette.primary[900],
