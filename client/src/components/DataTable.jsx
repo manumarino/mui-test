@@ -44,11 +44,6 @@ function DataTable({rows, columns, loading, editModalOpen, editModal}) {
         label="Borrar"
         showInMenu
       />,
-      <GridActionsCellItem
-        icon={<FileCopyIcon />}
-        label="Duplicar"
-        showInMenu
-      />,
     ],
   }
   ]

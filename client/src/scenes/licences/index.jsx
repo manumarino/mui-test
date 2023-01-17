@@ -3,6 +3,8 @@ import {
   Box,
   useTheme
 } from "@mui/material";
+import DebSurvey from 'components/DebSurvey';
+
 
 
 
@@ -13,6 +15,7 @@ const Licences = () => {
     <Box sx={{m: "2rem"}}>
 
       Licencias
+      <DebSurvey/>
       
     </Box>
   );
