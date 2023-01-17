@@ -1,22 +1,52 @@
 import React, {useState} from 'react';
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridCellParams } from "@mui/x-data-grid";
 import {useTranslation} from "react-i18next";
-import { useGetCustomersQuery } from "state/api";
 import { Box, useTheme } from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import { GridActionsCellItem } from "@mui/x-data-grid";
 
-function DataTable({rows, columns, loading}) {
+
+
+
+
+function DataTable({rows, columns, loading, editModalOpen, editModal}) {
   const theme = useTheme();
   const { t, i18n } = useTranslation();
-
   const [queryOptions, setQueryOptions] = React.useState({});
-
   const onFilterChange = React.useCallback((filterModel) => {
     // Here you save the data you need from the filter model
     setQueryOptions({ filterModel: { ...filterModel } });
   }, []);
+ const [pageSize, setPageSize] = useState(10);
 
-  
- const [pageSize, setPageSize] = useState(5);
+
+
+
+
+ const columnsEditable = [...columns, 
+  {
+    field: 'actions',
+    type: 'actions',
+    getActions: (params) => [
+      <>
+      <GridActionsCellItem
+        icon={<EditIcon />}
+        label="Editar"
+        title='Editar'
+        onClick={editModalOpen}
+      />
+      {editModal}
+      </>,
+      <GridActionsCellItem
+        icon={<DeleteIcon />}
+        label="Borrar"
+        showInMenu
+      />,
+    ],
+  }
+  ]
 
   
   return (
@@ -51,12 +81,20 @@ function DataTable({rows, columns, loading}) {
       >
         <DataGrid
             rows={rows}
-            columns={columns}
+            columns={columnsEditable}
             loading={loading}
             pageSize={pageSize}
             rowsPerPageOptions={[5, 10, 20]}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        
+            sx={{
+              '.MuiDataGrid-columnSeparator': {
+                display: 'none',
+              },
+              '& .MuiDataGrid-cell:focus': {
+                outline: 'none',
+              },
+            }}
+            disableSelectionOnClick
             //Filtros:
             components={{ Toolbar: GridToolbar }}
             onFilterModelChange={onFilterChange}
