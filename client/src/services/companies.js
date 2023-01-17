@@ -2,7 +2,8 @@ import api from "./api";
 import {API_COMPANIES} from "../constants/urls"
 
 /**
- * 
+ * Servicio para buscar, crear, modificar y eliminar compañías
+ * Definición del objeto de compañía
  * @param {object} company Company object
  * @param {string} company.name Nombre de la compañía
  * @param {string} company.logo Url del logo de la compañía
@@ -15,10 +16,11 @@ import {API_COMPANIES} from "../constants/urls"
  * @param {array} company.branchList Lista de Sucursales
  * @returns 
  */
-export function createCompany(company){
-    return api.post(API_COMPANIES, company);
-}
 
-export function getCompanies(){
-    return api.get(API_COMPANIES);
+export const company = {
+    getAll: async () => (await api.get(API_COMPANIES)).data,
+    getById: async (id) => (await api.get(`${API_COMPANIES}/${id}`)).data,
+    create: async (company) => (await api.post(API_COMPANIES, company)).data,
+    update: async (company) => (await api.put(API_COMPANIES, company)).data,
+    delete: async (id) => (await api.delete(`${API_COMPANIES}/${id}`)).data,
 }
