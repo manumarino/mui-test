@@ -78,7 +78,6 @@ function DebModal({
         <DialogActions>
           {isFunction(onReject) && (
             <Button
-              color='error'
               variant={rejectButtonVariant}
               onClick={() => handleAction(onReject)}>
               {rejectText}
@@ -86,7 +85,6 @@ function DebModal({
           )}
           {isFunction(onConfirm) && (
             <Button
-              color='success'
               variant={confirmButtonVariant}
               onClick={() => handleAction(onConfirm)}
               disabled={loading}>
