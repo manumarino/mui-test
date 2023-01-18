@@ -1,83 +1,109 @@
-import React, {useState} from 'react';
-import {Box, Card, CardActions, CardContent, Collapse, Button, Typography, Rating, useTheme, useMediaQuery} from "@mui/material";
-import {useGetProductsQuery} from "state/api";
-import Header from 'components/Header';
-
-const Company = () => {
-    const theme = useTheme();
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    return (
-        <Card sx={{
-            backgroundImage: "none",
-            backgroundColor: theme.palette.background.alt,
-            borderRadius: "0.55rem"
-        }}>
-            <CardContent>
-                <Typography sx={{fontSize:14}} color={theme.palette.secondary[700]} gutterBottom>
-                    Compañía
-                </Typography>
-                <Typography variant="h5" component="div"> 
-                    Debmedia
-                </Typography>
-                <Typography sx={{mb:"1.5rem"}} color={theme.palette.secondary[400]}>
-                    2022
-                </Typography>
-                <Rating value={5} readOnly />
-                <Typography variant="body2">
-                    Diciembre
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button
-                variant="primary"
-                size="small"
-                onClick={() => setIsExpanded(!isExpanded)} >
-                    See More
-                </Button>
-            </CardActions>
-            <Collapse
-            in={isExpanded}
-            timeout="auto"
-            unmountOnExit
-            sx={{
-                color: theme.palette.neutral[300]
-            }}
-            >
-                <CardContent>
-                    <Typography>id: 01 </Typography>
-                    <Typography>Supply Left: x </Typography>
-                    <Typography>Yearly Sales This Year: x </Typography>
-                    <Typography>Yearly Units Sold This Year: x </Typography>
-                </CardContent>
-            </Collapse>
-        </Card>
-    )
-}
+import React, { useState } from "react";
+import { Box, Button, Stack, useMediaQuery } from "@mui/material";
+import { useGetProductsQuery } from "state/api";
+import Header from "components/Header";
+import DebFormModal from "components/DebFormModal";
+import { DebFormCheckbox, DebFormTextInput, formBuilder } from "components/DebFormComponents";
 
 function Companies() {
-    const {data, isLoading} = useGetProductsQuery();
-    const isNonMobile = useMediaQuery("(min-width: 1000px)");
+  const [modalState, setModalState] = useState(false);
+  const [modal2State, setModal2State] = useState(false);
+  const openModal = () => {
+    setModalState(true);
+  };
+  const closeModal = () => {
+    setModalState(false);
+  };
+  const formConfig = {
+    onSubmit: (values) => {
+      console.log(values);
+      closeModal();
+    },
+    fields: [
+      {
+        name: "name",
+        label: "NOMBRE",
+        type: "text",
+        initialValue: "",
+      },
+      {
+        name: "direccion",
+        label: "DRI",
+        type: "text",
+        initialValue: "",
+      },
+      {
+        name: "estado",
+        label: "EST",
+        type: "text",
+        initialValue: "",
+      },
+      {
+        name: "capcha",
+        label: "usarCapcha",
+        type: "checkbox",
+        initialValue: false,
+      },
+      {
+        name: "idioma",
+        label: "Idioma",
+        type: "select",
+        initialValue: "",
+        selectOptions: [
+          {label: "Ingles", value: "en"},
+          {label: "Espanol", value: "es"},
+        ]
+      },
+    ],
+  };
+
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
+
+  const openModal2 = () => {
+    setModal2State(true);
+  };
+
+  const closeModal2 = () => {
+    setModal2State(false);
+  };
   return (
     <Box>
-        <Header title="COMPAÑÍAS" subtitle="Listado de compañías" />
-            <Box mt="20px" 
-            display="grid" 
-            gridTemplateColumns="repeat(4, minmax(0, 1fr))" 
-            justifyContent="space-between" 
-            rowGap="20px" 
-            columnGap="1.33%" 
-            sx={{"& > div": {gridColumn: isNonMobile ? undefined : "span 4"}}}>
-                
-                    <Company />
-                    <Company />
-                    <Company />
-                    <Company />
-                    <Company />
-                
-            </Box>
+      <Header title="COMPAÑÍAS" subtitle="Listado de compañías" />
+      <Button variant="contained" onClick={openModal}>
+        Crear Compañía
+      </Button>
+      <DebFormModal
+        open={modalState}
+        onClose={closeModal}
+        onReject={closeModal}
+        formConfig={formConfig}>
+      </DebFormModal>
+      <Button variant="contained" onClick={openModal2}>
+        Crear Compañía2
+      </Button>
+      <DebFormModal
+        open={modal2State}
+        onClose={closeModal2}
+        onReject={closeModal2}
+        initialValues={{
+          name: "",
+          direccion: "",
+          estado: "",
+          capcha: false,
+        }}
+        onSubmit= {handleSubmit}
+        >
+        <Stack spacing={2}>
+          <DebFormTextInput label={"Nombre"} name={"name"} />
+          <DebFormTextInput label={"Dirección"} name={"direccion"} />
+          <DebFormTextInput label={"Estado"} name={"estado"} />
+          <DebFormCheckbox label={"usar capcha"} name={"capcha"}/>
+        </Stack>
+      </DebFormModal>
     </Box>
-  )
+  );
 }
 
-export default Companies
+export default Companies;
