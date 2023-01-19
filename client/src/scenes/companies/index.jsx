@@ -87,7 +87,6 @@ function Companies() {
     <Box>
       <FlexBetween sx={{ alignItems: "flex-end" }}>
         <Header title="COMPAÑÍAS" subtitle="Lista de compañías" />
-        {/* <TableRowCreationButton buttonMessage='Crear nuevo usuario' innerMessage='JSX de Creacion' /> */}
         <Button variant="contained" onClick={handleCreateCompany}>
           <Add></Add> Crear Compañía
         </Button>
@@ -104,7 +103,7 @@ function Companies() {
         editModalOpen={handleEdit}
         onDelete={handleDelete}></DataTable>
 
-      {/* MODAL DE CREACIÓN DE COMPAÑÍA */}
+      {/* MODAL DE CREACIÓN / EDICIÓN DE COMPAÑÍA */}
       <DebFormModal
         open={modalState}
         onClose={closeModal}
