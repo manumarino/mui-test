@@ -1,39 +1,17 @@
-import React, { useState } from 'react';
-import {
-     LightModeOutlined,
-     DarkModeOutlined,
-     SettingsOutlined,
-     ArrowDropDownOutlined,
-     ChevronLeft,
-     Language
- } from '@mui/icons-material';
+import React from 'react';
+import { ChevronLeft } from '@mui/icons-material';
  import MenuIcon from '@mui/icons-material/Menu';
  import FlexBetween from "components/FlexBetween";
- import { useDispatch } from 'react-redux';
- import { setMode } from 'state';
- import { Toolbar, useTheme, IconButton, Button, Box, Menu, MenuItem, styled } from '@mui/material';
+ import { Toolbar, IconButton, styled } from '@mui/material';
  import MuiAppBar from '@mui/material/AppBar';
- import {useTranslation} from "react-i18next";
-import LanguageSelector from './LanguageSelector';
+import MenuNav from './MenuNav';
  
 
 const Navbar = ({
-    
-    user,
     open,
     setOpen,
     drawerWidth,
 }) => {
-    const { t, i18n } = useTranslation();
-    const dispatch = useDispatch();
-    const theme = useTheme();
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const isOpen = Boolean(anchorEl);
-    const id = isOpen ? 'simple-popover' : undefined;
-    const handleClick = (event) => setAnchorEl(event.currentTarget);
-    const handleClose = () => setAnchorEl(null);
-
     const iconSlided = <IconButton 
                         style={{display: !open ? 'none' : 'flex'}}
                         onClick={() => setOpen(!open)}>
@@ -69,9 +47,6 @@ const Navbar = ({
             } 
     }));
     
-
-    
-
   return (
   <AppBar
         position="fixed"
@@ -84,27 +59,11 @@ const Navbar = ({
     <ToolbarB sx={{ justifyContent:"space-between" }}>
         {/* LEFT SIDE */}
         <FlexBetween gap="1.5rem">
-            
             {iconSlided}
             {iconNotSlided}
-
-            
         </FlexBetween>
-
         {/* RIGHT SIDE */}
-        <FlexBetween gap="1.5rem">
-            <IconButton onClick={() => dispatch(setMode())}>
-                {theme.palette.mode === 'dark' ? (
-                    <LightModeOutlined sx={{fontSize: "1.3rem"}} />
-                ) : (
-                    <DarkModeOutlined sx={{fontSize: "1.3rem"}} />
-                )}
-            </IconButton>
-            <IconButton>
-                <SettingsOutlined sx={{fontSize: "1.3rem"}} />
-            </IconButton>
-            <LanguageSelector/>
-        </FlexBetween>
+        <MenuNav/>
     </ToolbarB>
   </AppBar>
   );
