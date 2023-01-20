@@ -21,6 +21,6 @@ export const company = {
     getAll: async () => (await api.get(API_COMPANIES)).data,
     getById: async (id) => (await api.get(`${API_COMPANIES}/${id}`)).data,
     create: async (company) => (await api.post(API_COMPANIES, company)).data,
-    update: async (company) => (await api.put(API_COMPANIES, company)).data,
+    update: async (company) => (await api.put(`${API_COMPANIES}/${company.id}`, company)).data,
     delete: async (id) => (await api.delete(`${API_COMPANIES}/${id}`)).data,
 }

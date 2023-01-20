@@ -1,105 +1,138 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Stack, useMediaQuery } from "@mui/material";
 import { useGetProductsQuery } from "state/api";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
-import { DebFormCheckbox, DebFormTextInput, formBuilder } from "components/DebFormComponents";
+import {
+  DebFormCheckbox,
+  DebFormTextInput,
+  formBuilder,
+} from "components/DebFormComponents";
+import DataTable from "components/DataTable";
+import { company } from "services/companies";
+import FlexBetween from "components/FlexBetween";
+import { Add, HdrPlusOutlined } from "@mui/icons-material";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
+const newCompanyValues = {
+  name: "",
+  logo: "",
+  dominio: "",
+  extension: "",
+  debqUrl: "",
+  debqUser: "",
+  debqPassword: "",
+  timeZone: "",
+};
 
 function Companies() {
   const [modalState, setModalState] = useState(false);
-  const [modal2State, setModal2State] = useState(false);
+  const [modalInitialValues, setModalInitialValues] =
+    useState(newCompanyValues);
+  const [companies, setCompaines] = useState([]);
+
+  const getCompanies = async () => {
+    setCompaines(await company.getAll());
+  };
+
+  useEffect(() => {
+    getCompanies();
+  }, []);
+
+  const handleSubmit = async (values) => {
+    console.log(values);
+    try {
+      if (values.id) {
+        //estamos editando
+        const res = await company.update(values);
+        alert("compania Editada");
+      } else {
+        const res = await company.create(values);
+        alert("compania Creada");
+      }
+      closeModal();
+      getCompanies();
+    } catch (error) {
+      alert("Ocurrió un error al crear la compañía: " + error.message);
+    }
+  };
+
   const openModal = () => {
     setModalState(true);
   };
+
   const closeModal = () => {
     setModalState(false);
-  };
-  const formConfig = {
-    onSubmit: (values) => {
-      console.log(values);
-      closeModal();
-    },
-    fields: [
-      {
-        name: "name",
-        label: "NOMBRE",
-        type: "text",
-        initialValue: "",
-      },
-      {
-        name: "direccion",
-        label: "DRI",
-        type: "text",
-        initialValue: "",
-      },
-      {
-        name: "estado",
-        label: "EST",
-        type: "text",
-        initialValue: "",
-      },
-      {
-        name: "capcha",
-        label: "usarCapcha",
-        type: "checkbox",
-        initialValue: false,
-      },
-      {
-        name: "idioma",
-        label: "Idioma",
-        type: "select",
-        initialValue: "",
-        selectOptions: [
-          {label: "Ingles", value: "en"},
-          {label: "Espanol", value: "es"},
-        ]
-      },
-    ],
+    setModalInitialValues(newCompanyValues);
   };
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleEdit = (company) => {
+    console.log("edit", company);
+    setModalInitialValues(company);
+    openModal();
   };
-
-  const openModal2 = () => {
-    setModal2State(true);
+  const handleCreateCompany = () => {
+    setModalInitialValues(newCompanyValues);
+    openModal();
   };
-
-  const closeModal2 = () => {
-    setModal2State(false);
+  const handleDelete = async (selectedCompany) => {
+    try {
+      const res = await company.delete(selectedCompany.id);
+      alert("Se elimino la compañía " + selectedCompany.name);
+      getCompanies();
+    } catch (error) {
+      alert("ocurrió un error eliminando la compañía: " + error.message);
+    }
   };
   return (
     <Box>
-      <Header title="COMPAÑÍAS" subtitle="Listado de compañías" />
-      <Button variant="contained" onClick={openModal}>
-        Crear Compañía
-      </Button>
+      <FlexBetween sx={{ alignItems: "flex-end" }}>
+        <Header title="COMPAÑÍAS" subtitle="Lista de compañías" />
+        <Button sx={{gap:'0.5rem'}}
+          variant='contained'
+          color='secondary'
+          size='small' onClick={handleCreateCompany}>
+          <AddBoxIcon/> Crear Compañía
+        </Button>
+      </FlexBetween>
+      <DataTable
+        loading={!companies.length}
+        rows={companies}
+        columns={[
+          { field: "id", headerName: "ID", flex: 0.5 },
+          { field: "name", headerName: "Nombre", flex: 1 },
+          { field: "dominio", headerName: "Dominio", flex: 1 },
+          { field: "extension", headerName: "Extension", flex: 1 },
+        ]}
+        editModalOpen={handleEdit}
+        onDelete={handleDelete}></DataTable>
+
+      {/* MODAL DE CREACIÓN / EDICIÓN DE COMPAÑÍA */}
       <DebFormModal
         open={modalState}
         onClose={closeModal}
         onReject={closeModal}
-        formConfig={formConfig}>
-      </DebFormModal>
-      <Button variant="contained" onClick={openModal2}>
-        Crear Compañía2
-      </Button>
-      <DebFormModal
-        open={modal2State}
-        onClose={closeModal2}
-        onReject={closeModal2}
-        initialValues={{
-          name: "",
-          direccion: "",
-          estado: "",
-          capcha: false,
-        }}
-        onSubmit= {handleSubmit}
-        >
+        initialValues={modalInitialValues}
+        onSubmit={handleSubmit}
+        formikProps={{ enableReinitialize: true }}
+        headerText={
+          modalInitialValues?.id ? "Editar Compañía" : "Crear Compañía"
+        }>
         <Stack spacing={2}>
           <DebFormTextInput label={"Nombre"} name={"name"} />
-          <DebFormTextInput label={"Dirección"} name={"direccion"} />
-          <DebFormTextInput label={"Estado"} name={"estado"} />
-          <DebFormCheckbox label={"usar capcha"} name={"capcha"}/>
+          <DebFormTextInput label={"Logo"} name={"logo"} />
+          <DebFormTextInput label={"Domino"} name={"dominio"} />
+          <DebFormTextInput label={"Extension"} name={"extension"} />
+          <DebFormTextInput
+            label={"URL de Conexión con debQ"}
+            name={"debqUrl"}
+          />
+          <DebFormTextInput label={"Usuario de debQ"} name={"debqUser"} />
+          <DebFormTextInput
+            label={"Contraseña de debQ"}
+            name={"debqPassword"}
+          />
+          <DebFormTextInput label={"Zona horaria"} name={"timeZone"} />
         </Stack>
       </DebFormModal>
     </Box>
