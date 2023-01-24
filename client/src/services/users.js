@@ -5,13 +5,9 @@ import {API_USERS} from "../constants/urls"
  * Servicio para buscar, crear, modificar y eliminar usuarios
  * Definición del objeto de usuario
  * @param {object} user Objeto Usuario
- * @param {string} user.firstName Nombre del usuario
- * @param {string} user.lastName Apellido del usuario
- * @param {number} user.id Id del usuario
+ * @param {string} user.nombre Nombre del usuario
  * @param {string} user.email Email del usuario
- * @param {string} user.type Tipo de usuario
- * @param {string} user.debUser Usuario 
- * @param {string} user.userPassword Contraseña 
+ * @param {string} user.password Contraseña 
  * @returns 
  */
 
@@ -22,13 +18,3 @@ export const user = {
     update: async (user) => (await api.put(`${API_USERS}/${user.id}`, user)).data,
     delete: async (id) => (await api.delete(`${API_USERS}/${id}`)).data,
 }
-
-/*
-columns={[
-          { field: "id", headerName: "ID", flex: 0.5 },
-          { field: "firstName", headerName: "Nombre", flex: 1 },
-          { field: "lastName", headerName: "Apellido", flex: 1 },
-          { field: "email", headerName: "Email", flex: 1 },
-          { field: "type", headerName: "Tipo de usuario", flex: 1 },
-        ]}
-*/
