@@ -139,6 +139,9 @@ export const tokensDark = {
           fontFamily: ["Inter", "sans-serif"].join(","),
           fontSize: 14,
         },
+        button: {
+          textTransform: 'none'
+        }
       },
     };
   };
