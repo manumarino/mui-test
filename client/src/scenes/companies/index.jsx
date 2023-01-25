@@ -34,7 +34,6 @@ function Companies() {
   }, []);
 
   const handleSubmit = async (values) => {
-    console.log(values);
     try {
       if (values.id) {
         //estamos editando
@@ -61,7 +60,6 @@ function Companies() {
   };
 
   const handleEdit = (company) => {
-    console.log("edit", company);
     setModalInitialValues(company);
     openModal();
   };

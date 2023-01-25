@@ -434,7 +434,7 @@ function DataTable({
 }
 
 function CustomToolbar(props) {
-  console.log(props);
+
   return (
     <GridToolbarContainer sx={{ padding: "0" }}>
       <GridToolbarColumnsButton />
