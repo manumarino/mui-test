@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Stack, useMediaQuery } from "@mui/material";
-import { useGetProductsQuery } from "state/api";
+import { Box, Stack } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
-import {
-  DebFormCheckbox,
-  DebFormTextInput,
-  formBuilder,
-} from "components/DebFormComponents";
+import { DebFormTextInput } from "components/DebFormComponents";
 import DataTable from "components/DataTable";
 import { company } from "services/companies";
-import FlexBetween from "components/FlexBetween";
-import { Add, HdrPlusOutlined } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const newCompanyValues = {
   name: "",
@@ -85,26 +80,42 @@ function Companies() {
   };
   return (
     <Box>
-      <FlexBetween sx={{ alignItems: "flex-end" }}>
-        <Header title="COMPAÑÍAS" subtitle="Lista de compañías" />
-        <Button variant="contained" onClick={handleCreateCompany}>
-          <Add></Add> Crear Compañía
-        </Button>
-      </FlexBetween>
+      <Header title="COMPAÑÍAS" subtitle="Lista de compañías" />
       <DataTable
         loading={!companies.length}
         rows={companies}
+        autoHeight
         columns={[
           { field: "id", headerName: "ID", flex: 0.5 },
           { field: "name", headerName: "Nombre", flex: 1 },
           { field: "dominio", headerName: "Dominio", flex: 1 },
           { field: "extension", headerName: "Extension", flex: 1 },
         ]}
-        editModalOpen={handleEdit}
-        onDelete={handleDelete}></DataTable>
+        rowActions={[
+          {
+            label: "Editar Agus",
+            icon: <EditIcon></EditIcon>,
+            action: handleEdit,
+          },
+          {
+            label: "Eliminar",
+            icon: <DeleteIcon></DeleteIcon>,
+            action: handleDelete,
+            showInMenu: true,
+          },
+        ]}
+        headerActions={[
+          {
+            label: "Crear Compañía",
+            action: handleCreateCompany,
+          },
+        ]}
+      />
 
       {/* MODAL DE CREACIÓN / EDICIÓN DE COMPAÑÍA */}
       <DebFormModal
+        maxWidth="sm"
+        fullWidth={true}
         open={modalState}
         onClose={closeModal}
         onReject={closeModal}
