@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
-import { DataGrid, GridToolbar, GridCellParams } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar} from "@mui/x-data-grid";
 import {useTranslation} from "react-i18next";
 import { Box, useTheme } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { GridActionsCellItem } from "@mui/x-data-grid";
 
 
 
 
 
-function DataTable({rows, columns, loading, editModalOpen, editModal}) {
+function DataTable({rows, columns, loading, editModalOpen, editModal, onDelete}) {
   const theme = useTheme();
   const { t, i18n } = useTranslation();
   const [queryOptions, setQueryOptions] = React.useState({});
@@ -35,7 +34,7 @@ function DataTable({rows, columns, loading, editModalOpen, editModal}) {
         icon={<EditIcon />}
         label="Editar"
         title='Editar'
-        onClick={editModalOpen}
+        onClick={()=>editModalOpen(params.row)}
       />
       {editModal}
       </>,
@@ -43,6 +42,7 @@ function DataTable({rows, columns, loading, editModalOpen, editModal}) {
         icon={<DeleteIcon />}
         label="Borrar"
         showInMenu
+        onClick={()=> onDelete(params.row)}
       />,
     ],
   }
