@@ -43,7 +43,6 @@ const Layout = () => {
     
     <CssBaseline />
     <Navbar 
-        user={data || {}}
         open={open}
         setOpen={setOpen}
         drawerWidth={drawerWidth}

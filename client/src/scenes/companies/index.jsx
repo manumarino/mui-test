@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
-import Header from "components/Header";
-import DebFormModal from "components/DebFormModal";
-import { DebFormTextInput } from "components/DebFormComponents";
-import DataTable from "components/DataTable";
-import { company } from "services/companies";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Box, Button, Stack, useMediaQuery } from "@mui/material";
+import { useGetProductsQuery } from "state/api";
+import Header from "components/Header";
+import DebFormModal from "components/DebFormModal";
+import {
+  DebFormCheckbox,
+  DebFormTextInput,
+  formBuilder,
+} from "components/DebFormComponents";
+import DataTable from "components/DataTable";
+import { company } from "services/companies";
+import FlexBetween from "components/FlexBetween";
+import { Add, HdrPlusOutlined } from "@mui/icons-material";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
 
 const newCompanyValues = {
   name: "",
