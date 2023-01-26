@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Stack, useMediaQuery } from "@mui/material";
 import { useGetProductsQuery } from "state/api";
 import Header from "components/Header";
@@ -13,6 +15,7 @@ import { company } from "services/companies";
 import FlexBetween from "components/FlexBetween";
 import { Add, HdrPlusOutlined } from "@mui/icons-material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+
 
 const newCompanyValues = {
   name: "",
@@ -29,10 +32,10 @@ function Companies() {
   const [modalState, setModalState] = useState(false);
   const [modalInitialValues, setModalInitialValues] =
     useState(newCompanyValues);
-  const [companies, setCompaines] = useState([]);
+  const [companies, setCompanies] = useState([]);
 
   const getCompanies = async () => {
-    setCompaines(await company.getAll());
+    setCompanies(await company.getAll());
   };
 
   useEffect(() => {
@@ -40,7 +43,6 @@ function Companies() {
   }, []);
 
   const handleSubmit = async (values) => {
-    console.log(values);
     try {
       if (values.id) {
         //estamos editando
@@ -67,7 +69,6 @@ function Companies() {
   };
 
   const handleEdit = (company) => {
-    console.log("edit", company);
     setModalInitialValues(company);
     openModal();
   };
@@ -86,29 +87,42 @@ function Companies() {
   };
   return (
     <Box>
-      <FlexBetween sx={{ alignItems: "flex-end" }}>
-        <Header title="COMPAÑÍAS" subtitle="Lista de compañías" />
-        <Button sx={{gap:'0.5rem'}}
-          variant='contained'
-          color='secondary'
-          size='small' onClick={handleCreateCompany}>
-          <AddBoxIcon/> Crear Compañía
-        </Button>
-      </FlexBetween>
+      <Header title="COMPAÑÍAS" subtitle="Lista de compañías" />
       <DataTable
         loading={!companies.length}
         rows={companies}
+        autoHeight
         columns={[
           { field: "id", headerName: "ID", flex: 0.5 },
           { field: "name", headerName: "Nombre", flex: 1 },
           { field: "dominio", headerName: "Dominio", flex: 1 },
           { field: "extension", headerName: "Extension", flex: 1 },
         ]}
-        editModalOpen={handleEdit}
-        onDelete={handleDelete}></DataTable>
+        rowActions={[
+          {
+            label: "Editar Agus",
+            icon: <EditIcon></EditIcon>,
+            action: handleEdit,
+          },
+          {
+            label: "Eliminar",
+            icon: <DeleteIcon></DeleteIcon>,
+            action: handleDelete,
+            showInMenu: true,
+          },
+        ]}
+        headerActions={[
+          {
+            label: "Crear Compañía",
+            action: handleCreateCompany,
+          },
+        ]}
+      />
 
       {/* MODAL DE CREACIÓN / EDICIÓN DE COMPAÑÍA */}
       <DebFormModal
+        maxWidth="sm"
+        fullWidth={true}
         open={modalState}
         onClose={closeModal}
         onReject={closeModal}

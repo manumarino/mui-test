@@ -20,6 +20,6 @@ export const branch = {
     getAll: async () => (await api.get(API_BRANCHES)).data,
     getById: async (id) => (await api.get(`${API_BRANCHES}/${id}`)).data,
     create: async (branch) => (await api.post(API_BRANCHES, branch)).data,
-    update: async (branch) => (await api.put(API_BRANCHES, branch)).data,
+    update: async (branch) => (await api.put(`${API_BRANCHES}/${branch.id}`, branch)).data,
     delete: async (id) => (await api.delete(`${API_BRANCHES}/${id}`)).data,
 }

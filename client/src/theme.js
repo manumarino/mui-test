@@ -138,7 +138,7 @@ export const tokensDark = {
         h6: {
           fontFamily: ["Inter", "sans-serif"].join(","),
           fontSize: 14,
-        },
+        }
       },
     };
   };
