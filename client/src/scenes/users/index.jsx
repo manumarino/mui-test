@@ -13,6 +13,8 @@ import { user } from "services/users";
 import FlexBetween from "components/FlexBetween";
 import { Add, HdrPlusOutlined } from "@mui/icons-material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const newUserValues = {
   name: "",
@@ -35,14 +37,14 @@ function Users() {
   }, []);
 
   const handleSubmit = async (values) => {
-    console.log(values);
     try {
       if (values.id) {
+        //estamos editando
         const res = await user.update(values);
-        alert("Usuario Editado");
+        alert("Usuario editado");
       } else {
         const res = await user.create(values);
-        alert("Usuario Creado");
+        alert("Usuario creado");
       }
       closeModal();
       getUsers();
@@ -60,9 +62,8 @@ function Users() {
     setModalInitialValues(newUserValues);
   };
 
-  const handleEdit = (user) => {
-    console.log("edit", user);
-    setModalInitialValues(user);
+  const handleEdit = (company) => {
+    setModalInitialValues(company);
     openModal();
   };
   const handleCreateUser = () => {
@@ -72,7 +73,7 @@ function Users() {
   const handleDelete = async (selectedUser) => {
     try {
       const res = await user.delete(selectedUser.id);
-      alert("Se eliminó el uauario " + selectedUser.name);
+      alert("Se eliminó el usuario " + selectedUser.name);
       getUsers();
     } catch (error) {
       alert("Ocurrió un error eliminando el usuario: " + error.message);
@@ -80,16 +81,8 @@ function Users() {
   };
   return (
     <Box>
-      <FlexBetween sx={{ alignItems: "flex-end" }}>
         <Header title="USUARIOS" subtitle="Lista de usuarios" />
-        <Button sx={{gap:'0.5rem'}}
-          variant='contained'
-          color='secondary'
-          size='small' onClick={handleCreateUser}>
-          <AddBoxIcon/> Crear Usuario
-        </Button>
-      </FlexBetween>
-      <DataTable
+       <DataTable
         loading={!users.length}
         rows={users}
         columns={[
@@ -97,11 +90,32 @@ function Users() {
           { field: "name", headerName: "Nombre", flex: 1 },
           { field: "email", headerName: "Email", flex: 1 },
         ]}
-        editModalOpen={handleEdit}
-        onDelete={handleDelete}></DataTable>
+        rowActions={[
+          {
+            label: "Editar",
+            icon: <EditIcon/>,
+            action: handleEdit,
+          },
+          {
+            label: "Eliminar",
+            icon: <DeleteIcon/>,
+            action: handleDelete,
+            showInMenu: true,
+          },
+        ]}
+        headerActions={[
+          {
+            label: "Crear usuario",
+            icon: <AddBoxIcon/>,
+            action: handleCreateUser,
+          },
+        ]}
+      />
 
-      {/* MODAL DE CREACIÓN / EDICIÓN DE USUARIOS */}
+      {/* MODAL DE CREACIÓN / EDICIÓN DE USUARIO */}
       <DebFormModal
+        maxWidth="sm"
+        fullWidth={true}
         open={modalState}
         onClose={closeModal}
         onReject={closeModal}
@@ -111,14 +125,10 @@ function Users() {
         headerText={
           modalInitialValues?.id ? "Editar Usuario" : "Crear Usuario"
         }>
-        <Stack gap={2}>
-          <DebFormTextInput label={"ID"} name={"id"} />
-          <DebFormTextInput label={"Nombre"} name={"fisrstName"} />
+        <Stack spacing={2}>
+          <DebFormTextInput label={"Nombre"} name={"name"} />
           <DebFormTextInput label={"Email"} name={"email"} />
-          <DebFormTextInput
-            label={"Contraseña del Usuario"}
-            name={"password"}
-          />
+          <DebFormTextInput label={"Contraseña"} name={"password"} />
         </Stack>
       </DebFormModal>
     </Box>

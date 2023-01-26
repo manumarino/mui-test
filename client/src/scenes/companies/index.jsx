@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Stack, useMediaQuery } from "@mui/material";
 import { useGetProductsQuery } from "state/api";
 import Header from "components/Header";
@@ -15,6 +13,8 @@ import { company } from "services/companies";
 import FlexBetween from "components/FlexBetween";
 import { Add, HdrPlusOutlined } from "@mui/icons-material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const newCompanyValues = {
@@ -91,7 +91,6 @@ function Companies() {
       <DataTable
         loading={!companies.length}
         rows={companies}
-        autoHeight
         columns={[
           { field: "id", headerName: "ID", flex: 0.5 },
           { field: "name", headerName: "Nombre", flex: 1 },
@@ -100,13 +99,13 @@ function Companies() {
         ]}
         rowActions={[
           {
-            label: "Editar Agus",
-            icon: <EditIcon></EditIcon>,
+            label: "Editar",
+            icon: <EditIcon/>,
             action: handleEdit,
           },
           {
             label: "Eliminar",
-            icon: <DeleteIcon></DeleteIcon>,
+            icon: <DeleteIcon/>,
             action: handleDelete,
             showInMenu: true,
           },
@@ -114,6 +113,7 @@ function Companies() {
         headerActions={[
           {
             label: "Crear Compañía",
+            icon: <AddBoxIcon/>,
             action: handleCreateCompany,
           },
         ]}

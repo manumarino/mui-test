@@ -453,6 +453,7 @@ function CustomToolbar(props) {
         {...props.debButtonWithDropdownProps}
         sx={{
           paddingBottom: "0.5rem",
+          boxShadow: "none"
         }}></DebButtonWithDropdown>
     </GridToolbarContainer>
   );
