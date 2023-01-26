@@ -15,6 +15,7 @@ import { Add, HdrPlusOutlined } from "@mui/icons-material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useSnackbar } from 'notistack';
 
 const newUserValues = {
   name: "",
@@ -35,21 +36,33 @@ function Users() {
   useEffect(() => {
     getUsers();
   }, []);
+  
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
     try {
       if (values.id) {
         //estamos editando
         const res = await user.update(values);
-        alert("Usuario editado");
+        enqueueSnackbar('Usuario editado', { 
+          preventDuplicate: true, 
+          variant: 'success'
+      });
       } else {
         const res = await user.create(values);
-        alert("Usuario creado");
+        enqueueSnackbar('Usuario creado', { 
+          preventDuplicate: true, 
+          variant: 'success'
+      });
       }
       closeModal();
       getUsers();
     } catch (error) {
-      alert("Ocurrió un error al crear el usuario: " + error.message);
+      enqueueSnackbar("Ocurrió un error al crear el usuario", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    });
+    console.log("Ocurrió un error al crear el usuario: " + error.message);
     }
   };
 
@@ -73,10 +86,17 @@ function Users() {
   const handleDelete = async (selectedUser) => {
     try {
       const res = await user.delete(selectedUser.id);
-      alert("Se eliminó el usuario " + selectedUser.name);
+      enqueueSnackbar(("Se eliminó el usuario " + selectedUser.name), { 
+        preventDuplicate: true, 
+        variant: 'success'
+    });
       getUsers();
     } catch (error) {
-      alert("Ocurrió un error eliminando el usuario: " + error.message);
+      enqueueSnackbar("Ocurrió un error eliminando el usuario", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    } );
+      console.log(("Ocurrió un error eliminando el usuario: " + error.message))
     }
   };
   return (

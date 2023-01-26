@@ -11,6 +11,7 @@ import {
   Divider,
   IconButton,
   LinearProgress,
+  useTheme
 } from "@mui/material";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
@@ -33,6 +34,7 @@ function DebModal({
   ...props
 }) {
   const [loading, setLoading] = React.useState(false);
+  const theme = useTheme();
   const handleAction = (fn) => {
     if (typeof fn === "function") {
       setLoading(true);
@@ -67,7 +69,7 @@ function DebModal({
         </Box>
       )}
       {headerText && (
-        <DialogTitle sx={{ fontSize: "1.5rem" }}>{headerText}</DialogTitle>
+        <DialogTitle sx={{ fontFamily:'Inter Tight', fontSize: "1.7rem", padding: "1rem 1rem 0.7rem 1.5rem", fontWeight:"100", textAlign:"center", textTransform: "uppercase"}}>{headerText}</DialogTitle>
       )}
       <Divider />
       <DialogContent>
@@ -79,7 +81,8 @@ function DebModal({
           {isFunction(onReject) && (
             <Button
               variant={rejectButtonVariant}
-              onClick={() => handleAction(onReject)}>
+              onClick={() => handleAction(onReject)}
+              color="error">
               {rejectText}
             </Button>
           )}
@@ -87,7 +90,8 @@ function DebModal({
             <Button
               variant={confirmButtonVariant}
               onClick={() => handleAction(onConfirm)}
-              disabled={loading}>
+              disabled={loading}
+              color="success">
               {confirmText}
               {loading && (
                 <CircularProgress
