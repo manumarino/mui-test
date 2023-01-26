@@ -15,6 +15,7 @@ import { Add, HdrPlusOutlined } from "@mui/icons-material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useSnackbar } from 'notistack';
 
 
 const newCompanyValues = {
@@ -42,20 +43,32 @@ function Companies() {
     getCompanies();
   }, []);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleSubmit = async (values) => {
     try {
       if (values.id) {
         //estamos editando
         const res = await company.update(values);
-        alert("compania Editada");
+        enqueueSnackbar('Compañía editada', { 
+          preventDuplicate: true, 
+          variant: 'success'
+      });
       } else {
         const res = await company.create(values);
-        alert("compania Creada");
+        enqueueSnackbar('Compañía creada', { 
+          preventDuplicate: true, 
+          variant: 'success'
+      });
       }
       closeModal();
       getCompanies();
     } catch (error) {
-      alert("Ocurrió un error al crear la compañía: " + error.message);
+      enqueueSnackbar("Ocurrió un error al crear la compañía", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    });
+      console.log("Ocurrió un error al crear la compañía: " + error.message);
     }
   };
 
@@ -79,10 +92,17 @@ function Companies() {
   const handleDelete = async (selectedCompany) => {
     try {
       const res = await company.delete(selectedCompany.id);
-      alert("Se elimino la compañía " + selectedCompany.name);
+      enqueueSnackbar(("Se eliminó la compañía" + selectedCompany.name), { 
+        preventDuplicate: true, 
+        variant: 'success'
+    });
       getCompanies();
     } catch (error) {
-      alert("ocurrió un error eliminando la compañía: " + error.message);
+      enqueueSnackbar("Ocurrió un error eliminando la compañía", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    } );
+      console.log(("Ocurrió un error eliminando la compañía: " + error.message))
     }
   };
   return (

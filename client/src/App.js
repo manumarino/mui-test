@@ -14,6 +14,8 @@ import Users from "scenes/users";
 import MobileConnection from "scenes/mobile-connection";
 import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
+import { SnackbarProvider } from 'notistack';
+
 
 i18next.init({
   interpolation: {escapeValue: false},
@@ -24,11 +26,18 @@ function App() {
 
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
   return (
     <div className="app">
       <I18nextProvider i18n={i18next}>
         <BrowserRouter>
           <ThemeProvider theme={theme}>
+          <SnackbarProvider 
+          maxSnack={3}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}>
             <CssBaseline />
             <Routes>
               <Route element={<Layout />}>
@@ -41,6 +50,7 @@ function App() {
                 <Route path="/mobile-connection/*" element={<MobileConnection />} />
               </Route>
             </Routes>
+            </SnackbarProvider>
           </ThemeProvider>
         </BrowserRouter>
       </I18nextProvider>
