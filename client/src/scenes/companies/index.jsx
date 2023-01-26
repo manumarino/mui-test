@@ -23,10 +23,10 @@ function Companies() {
   const [modalState, setModalState] = useState(false);
   const [modalInitialValues, setModalInitialValues] =
     useState(newCompanyValues);
-  const [companies, setCompaines] = useState([]);
+  const [companies, setCompanies] = useState([]);
 
   const getCompanies = async () => {
-    setCompaines(await company.getAll());
+    setCompanies(await company.getAll());
   };
 
   useEffect(() => {

@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import { ListItemIcon, ListItemText } from "@mui/material";
 
 
 export default function DebButtonWithDropdown({buttons, ...props}) {
@@ -44,7 +45,7 @@ export default function DebButtonWithDropdown({buttons, ...props}) {
           .map((elem) => {
             return (
               <Button key={elem.label} onClick={elem.action}>
-                {elem.label}
+                {elem.icon}{elem.label}
               </Button>
             );
           })}
@@ -84,7 +85,12 @@ export default function DebButtonWithDropdown({buttons, ...props}) {
                     .map((elem) => {
                       return (
                         <MenuItem key={elem.label} onClick={() => handleMenuItemClick(elem.action)}>
-                          {elem.label}
+                          {elem.icon && <ListItemIcon>
+                            {elem.icon}
+                          </ListItemIcon>}
+                          <ListItemText>
+                            {elem.label}
+                          </ListItemText>
                         </MenuItem>
                       );
                     })}

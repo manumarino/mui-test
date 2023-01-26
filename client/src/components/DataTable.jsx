@@ -448,11 +448,11 @@ function CustomToolbar(props) {
       {props.showQuickFilter && (
         <GridToolbarQuickFilter {...props.quickFilterProps} />
       )}
+      <Box sx={{ flex: 0.05}} />
       <DebButtonWithDropdown
         {...props.debButtonWithDropdownProps}
         sx={{
           paddingBottom: "0.5rem",
-          paddingLeft: "0.5rem",
         }}></DebButtonWithDropdown>
     </GridToolbarContainer>
   );
