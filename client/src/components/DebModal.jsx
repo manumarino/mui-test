@@ -62,7 +62,7 @@ function DebModal({
       {isFunction(onClose) && (
         <Box sx={{ position: "relative" }}>
           <Box sx={{ position: "absolute", right: "0px", padding: "0.2rem" }}>
-            <IconButton onClick={() => handleAction(onClose)} size="small">
+            <IconButton onClick={() => handleAction(onClose)} size="small" sx={{m:0.8}} >
               <Close fontSize="inherit" />
             </IconButton>
           </Box>
