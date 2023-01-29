@@ -8,7 +8,7 @@ import {API_BRANCHES} from "../constants/urls"
  * @param {string} branch.name nombre de la sucursal
  * @param {string} branch.direccion Dirección de la sucursal
  * @param {string} branch.estado Estado donde reside la sucursal
- * @param {string} branch.país País donde reside la sucursal
+ * @param {string} branch.pais País donde reside la sucursal
  * @param {string} branch.latitude latitud geográfica de la sucursal
  * @param {string} branch.longitude Longitud geográfica de la sucursal
  * @param {number} branch.company.id Id de la compañía a la cual pertenece la sucursal.
