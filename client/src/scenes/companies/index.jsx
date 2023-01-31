@@ -57,11 +57,19 @@ function Companies() {
       closeModal();
       getCompanies();
     } catch (error) {
+      if(values.id) {        
+      enqueueSnackbar("Ocurrió un error al editar la compañía", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    });
+      console.log("Ocurrió un error al editar la compañía: " + error.message);
+      } else {        
       enqueueSnackbar("Ocurrió un error al crear la compañía", { 
         preventDuplicate: true, 
         variant: 'error'
     });
       console.log("Ocurrió un error al crear la compañía: " + error.message);
+      }
     }
   };
 

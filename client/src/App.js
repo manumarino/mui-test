@@ -1,4 +1,4 @@
-import { LayersOutlined } from "@mui/icons-material";
+
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {createTheme} from "@mui/material/styles";
 import { useMemo } from "react";
@@ -9,7 +9,7 @@ import Layout from "scenes/layout";
 import Dashboard from "scenes/debdash";
 import Companies from "scenes/companies";
 import Branches from "scenes/branches";
-import Licences from "scenes/licences";
+import Licenses from "scenes/licenses";
 import Users from "scenes/users";
 import MobileConnection from "scenes/mobile-connection";
 import {I18nextProvider} from "react-i18next";
@@ -45,7 +45,7 @@ function App() {
                 <Route path="/debdash/*" element={<Dashboard />} />
                 <Route path="/companies/*" element={<Companies />} />
                 <Route path="/branches/*" element={<Branches />} />
-                <Route path="/licences/*" element={<Licences />} />
+                <Route path="/licenses/*" element={<Licenses />} />
                 <Route path="/users/*" element={<Users />} />
                 <Route path="/mobile-connection/*" element={<MobileConnection />} />
               </Route>

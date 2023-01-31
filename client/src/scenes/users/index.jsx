@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Stack, useMediaQuery } from "@mui/material";
-import { useGetProductsQuery } from "state/api";
+import { Box, Stack } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
-import {
-  DebFormCheckbox,
-  DebFormTextInput,
-  formBuilder,
-} from "components/DebFormComponents";
+import { DebFormTextInput } from "components/DebFormComponents";
 import DataTable from "components/DataTable";
 import { user } from "services/users";
-import FlexBetween from "components/FlexBetween";
-import { Add, HdrPlusOutlined } from "@mui/icons-material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -58,11 +51,19 @@ function Users() {
       closeModal();
       getUsers();
     } catch (error) {
+      if(values.id) {        
+      enqueueSnackbar("Ocurrió un error al editar el usuario", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    });
+    console.log("Ocurrió un error al editar el usuario: " + error.message);
+      } else {        
       enqueueSnackbar("Ocurrió un error al crear el usuario", { 
         preventDuplicate: true, 
         variant: 'error'
     });
     console.log("Ocurrió un error al crear el usuario: " + error.message);
+      }
     }
   };
 
@@ -101,7 +102,7 @@ function Users() {
   };
   return (
     <Box>
-        <Header title="USUARIOS" subtitle="Lista de usuarios" />
+        <Header title="USUARIOS" subtitle="Lista de Usuarios" />
        <DataTable
         loading={!users.length}
         rows={users}
