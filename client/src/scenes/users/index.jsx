@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Stack, useMediaQuery } from "@mui/material";
-import { useGetProductsQuery } from "state/api";
+import { Box, Stack } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
-import {
-  DebFormCheckbox,
-  DebFormTextInput,
-  formBuilder,
-} from "components/DebFormComponents";
+import { DebFormTextInput } from "components/DebFormComponents";
 import DataTable from "components/DataTable";
 import { user } from "services/users";
-import FlexBetween from "components/FlexBetween";
-import { Add, HdrPlusOutlined } from "@mui/icons-material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useSnackbar } from 'notistack';
 
 const newUserValues = {
   name: "",
@@ -33,21 +29,41 @@ function Users() {
   useEffect(() => {
     getUsers();
   }, []);
+  
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
-    console.log(values);
     try {
       if (values.id) {
+        //estamos editando
         const res = await user.update(values);
-        alert("Usuario Editado");
+        enqueueSnackbar('Usuario editado', { 
+          preventDuplicate: true, 
+          variant: 'success'
+      });
       } else {
         const res = await user.create(values);
-        alert("Usuario Creado");
+        enqueueSnackbar('Usuario creado', { 
+          preventDuplicate: true, 
+          variant: 'success'
+      });
       }
       closeModal();
       getUsers();
     } catch (error) {
-      alert("Ocurrió un error al crear el usuario: " + error.message);
+      if(values.id) {        
+      enqueueSnackbar("Ocurrió un error al editar el usuario", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    });
+    console.log("Ocurrió un error al editar el usuario: " + error.message);
+      } else {        
+      enqueueSnackbar("Ocurrió un error al crear el usuario", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    });
+    console.log("Ocurrió un error al crear el usuario: " + error.message);
+      }
     }
   };
 
@@ -60,9 +76,8 @@ function Users() {
     setModalInitialValues(newUserValues);
   };
 
-  const handleEdit = (user) => {
-    console.log("edit", user);
-    setModalInitialValues(user);
+  const handleEdit = (company) => {
+    setModalInitialValues(company);
     openModal();
   };
   const handleCreateUser = () => {
@@ -72,24 +87,23 @@ function Users() {
   const handleDelete = async (selectedUser) => {
     try {
       const res = await user.delete(selectedUser.id);
-      alert("Se eliminó el uauario " + selectedUser.name);
+      enqueueSnackbar(("Se eliminó el usuario " + selectedUser.name), { 
+        preventDuplicate: true, 
+        variant: 'success'
+    });
       getUsers();
     } catch (error) {
-      alert("Ocurrió un error eliminando el usuario: " + error.message);
+      enqueueSnackbar("Ocurrió un error eliminando el usuario", { 
+        preventDuplicate: true, 
+        variant: 'error'
+    } );
+      console.log(("Ocurrió un error eliminando el usuario: " + error.message))
     }
   };
   return (
     <Box>
-      <FlexBetween sx={{ alignItems: "flex-end" }}>
-        <Header title="USUARIOS" subtitle="Lista de usuarios" />
-        <Button sx={{gap:'0.5rem'}}
-          variant='contained'
-          color='secondary'
-          size='small' onClick={handleCreateUser}>
-          <AddBoxIcon/> Crear Usuario
-        </Button>
-      </FlexBetween>
-      <DataTable
+        <Header title="USUARIOS" subtitle="Lista de Usuarios" />
+       <DataTable
         loading={!users.length}
         rows={users}
         columns={[
@@ -97,11 +111,32 @@ function Users() {
           { field: "name", headerName: "Nombre", flex: 1 },
           { field: "email", headerName: "Email", flex: 1 },
         ]}
-        editModalOpen={handleEdit}
-        onDelete={handleDelete}></DataTable>
+        rowActions={[
+          {
+            label: "Editar",
+            icon: <EditIcon/>,
+            action: handleEdit,
+          },
+          {
+            label: "Eliminar",
+            icon: <DeleteIcon/>,
+            action: handleDelete,
+            showInMenu: true,
+          },
+        ]}
+        headerActions={[
+          {
+            label: "Crear usuario",
+            icon: <AddBoxIcon/>,
+            action: handleCreateUser,
+          },
+        ]}
+      />
 
-      {/* MODAL DE CREACIÓN / EDICIÓN DE USUARIOS */}
+      {/* MODAL DE CREACIÓN / EDICIÓN DE USUARIO */}
       <DebFormModal
+        maxWidth="sm"
+        fullWidth={true}
         open={modalState}
         onClose={closeModal}
         onReject={closeModal}
@@ -111,14 +146,10 @@ function Users() {
         headerText={
           modalInitialValues?.id ? "Editar Usuario" : "Crear Usuario"
         }>
-        <Stack gap={2}>
-          <DebFormTextInput label={"ID"} name={"id"} />
-          <DebFormTextInput label={"Nombre"} name={"fisrstName"} />
+        <Stack spacing={2}>
+          <DebFormTextInput label={"Nombre"} name={"name"} />
           <DebFormTextInput label={"Email"} name={"email"} />
-          <DebFormTextInput
-            label={"Contraseña del Usuario"}
-            name={"password"}
-          />
+          <DebFormTextInput label={"Contraseña"} name={"password"} />
         </Stack>
       </DebFormModal>
     </Box>

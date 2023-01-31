@@ -39,12 +39,13 @@ export default function DebButtonWithDropdown({buttons, ...props}) {
         {...props}
         variant="contained"
         ref={anchorRef}
-        aria-label="split button">
+        aria-label="split button"
+        color="secondary">
         {buttons
           ?.filter((elem) => !elem.showInMenu)
           .map((elem) => {
             return (
-              <Button key={elem.label} onClick={elem.action}>
+              <Button sx={{gap:0.6}} key={elem.label} onClick={elem.action}>
                 {elem.icon}{elem.label}
               </Button>
             );

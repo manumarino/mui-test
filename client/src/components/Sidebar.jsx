@@ -39,7 +39,7 @@ const navItems = [
     {
         text: "Licencias",
         icon: <HistoryEdu/>,
-        path: "licences"
+        path: "licenses"
     },
     {
         text: "Usuarios",
