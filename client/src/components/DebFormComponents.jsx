@@ -7,6 +7,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  OutlinedInput,
+  ListItemText
 } from "@mui/material";
 import { useField } from "formik";
 import React from "react";
@@ -56,18 +58,50 @@ export function DebFormSelect({ label, selectOptions, ...props }) {
   );
 }
 
-const form = [
-  {
-    name: "",
-    label: "",
-    type: "",
-    initialValue: "",
-  },
-];
+export function DebFormMultiSelect({
+  label,
+  selectOptions,
+  maxHeight,
+  width,
+  ...props
+}) {
+  const [field, meta] = useField(props);
 
-const typeMapping = {
-  text: DebFormTextInput,
-};
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: maxHeight || 224,
+        width: width || 250,
+      },
+    },
+  };
+
+  return (
+    <div>
+      <FormControl sx={{ m: 1, width: 300 }}>
+        <InputLabel id="demo-multiple-checkbox-label">{label}</InputLabel>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          input={<OutlinedInput label={label} />}
+          renderValue={(selected) =>
+            selected.map((elem) => elem.label).join(", ")
+          }
+          MenuProps={MenuProps}
+          {...field}
+          {...props}>
+          {selectOptions?.map((option) => (
+            <MenuItem key={option.value} value={option}>
+              <Checkbox checked={field.value.includes(option)} />
+              <ListItemText primary={option.label} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+  );
+}
 
 export function formBuilder(fields) {
   return (
@@ -102,6 +136,16 @@ export function formBuilder(fields) {
               />
             );
             break;
+            case "multiSelect":
+              return (
+                <DebFormMultiSelect
+                  key={field.name}
+                  label={field.label}
+                  name={field.name}
+                  selectOptions={field.selectOptions}
+                />
+              );
+              break;
           default:
             break;
         }

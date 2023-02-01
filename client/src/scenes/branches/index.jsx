@@ -18,10 +18,11 @@ const newBranchValues = {
   pais: "",
   latitude: "",
   longitude: "",
+  timeZone: "",
   company: {
     id: "",
   },
-  timeZone: "",
+  
 };
 
 
@@ -123,8 +124,12 @@ const Branches = () => {
           { field: "pais", headerName: "País", flex: 1 },
           { field: "latitude", headerName: "Latitud", flex: 1 },
           { field: "longitude", headerName: "Longitud", flex: 1 },
-          { field: "company.id", headerName: "ID de Compañía", flex: 1 },
-          { field: "timeZone", headerName: "Zona Horaria", flex: 1 },
+          { field: "timeZone", headerName: "Zona Horaria (GMT)", flex: 1 },
+          { field: "company.id", headerName: "ID de Compañía", 
+          renderCell: (params) => {
+            return params.row.company.id;
+          },
+          flex: 1 },
         ]}
         rowActions={[
           {
@@ -168,34 +173,35 @@ const Branches = () => {
           <DebFormTextInput label={"País"} name={"pais"} />
           <DebFormTextInput label={"Latitud"} name={"latitude"} />
           <DebFormTextInput label={"Longitud"} name={"longitude"} />
-          <DebFormTextInput label={"Id de Compañía"} name={"company.id"} />
           <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={[
-            {label: "GMT-12", value: "GMT-12"},
-            {label: "GMT-11", value: "GMT-11"},
-            {label: "GMT-10", value: "GMT-10"},
-            {label: "GMT-09", value: "GMT-09"},
-            {label: "GMT-08", value: "GMT-08"},
-            {label: "GMT-07", value: "GMT-07"},
-            {label: "GMT-06", value: "GMT-06"},
-            {label: "GMT-05", value: "GMT-05"},
-            {label: "GMT-04", value: "GMT-04"},
-            {label: "GMT-03", value: "GMT-03"},
-            {label: "GMT-02", value: "GMT-02"},
-            {label: "GMT-01", value: "GMT-01"},
-            {label: "GMT", value: "GMT"},
-            {label: "GMT+01", value: "GMT+01"},
-            {label: "GMT+02", value: "GMT+02"},
-            {label: "GMT+03", value: "GMT+03"},
-            {label: "GMT+04", value: "GMT+04"},
-            {label: "GMT+05", value: "GMT+05"},
-            {label: "GMT+06", value: "GMT+06"},
-            {label: "GMT+07", value: "GMT+07"},
-            {label: "GMT+08", value: "GMT+08"},
-            {label: "GMT+09", value: "GMT+09"},
-            {label: "GMT+10", value: "GMT+10"},
-            {label: "GMT+11", value: "GMT+11"},
-            {label: "GMT+12", value: "GMT+12"},
+            {label: "GMT-12", value: "-12"},
+            {label: "GMT-11", value: "-11"},
+            {label: "GMT-10", value: "-10"},
+            {label: "GMT-09", value: "-9"},
+            {label: "GMT-08", value: "-8"},
+            {label: "GMT-07", value: "-7"},
+            {label: "GMT-06", value: "-6"},
+            {label: "GMT-05", value: "-5"},
+            {label: "GMT-04", value: "-4"},
+            {label: "GMT-03", value: "-3"},
+            {label: "GMT-02", value: "-2"},
+            {label: "GMT-01", value: "-1"},
+            {label: "GMT", value: "+0"},
+            {label: "GMT+01", value: "+1"},
+            {label: "GMT+02", value: "+2"},
+            {label: "GMT+03", value: "+3"},
+            {label: "GMT+04", value: "+4"},
+            {label: "GMT+05", value: "+5"},
+            {label: "GMT+06", value: "+6"},
+            {label: "GMT+07", value: "+7"},
+            {label: "GMT+08", value: "+8"},
+            {label: "GMT+09", value: "+9"},
+            {label: "GMT+10", value: "+10"},
+            {label: "GMT+11", value: "+11"},
+            {label: "GMT+12", value: "+12"},
           ]} />
+          <DebFormTextInput label={"Id de Compañía"} name={"company.id"} />
+          
         </Stack>
       </DebFormModal>
     </Box>

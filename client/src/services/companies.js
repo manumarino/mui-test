@@ -12,7 +12,7 @@ import {API_COMPANIES} from "../constants/urls"
  * @param {string} company.debqUrl URL para la conexión con debQ de la compañía
  * @param {string} company.debqUser Usuario para la conexión con debQ de la compañía
  * @param {string} company.debqPassword Contraseña para la conexión con debQ de la compañía
- * @param {number} company.timeZone Zona Horaria
+ * @param {string} company.timeZone Zona Horaria
  * @param {array} company.branchList Lista de Sucursales
  * @returns 
  */
