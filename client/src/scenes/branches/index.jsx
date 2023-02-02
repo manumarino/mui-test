@@ -9,6 +9,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
+import { timeZones } from "constants/timeZones";
 
 
 const newBranchValues = {
@@ -169,33 +170,7 @@ const Branches = () => {
           <DebFormTextInput label={"Latitud"} name={"latitude"} />
           <DebFormTextInput label={"Longitud"} name={"longitude"} />
           <DebFormTextInput label={"Id de Compañía"} name={"company.id"} />
-          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={[
-            {label: "GMT-12", value: "GMT-12"},
-            {label: "GMT-11", value: "GMT-11"},
-            {label: "GMT-10", value: "GMT-10"},
-            {label: "GMT-09", value: "GMT-09"},
-            {label: "GMT-08", value: "GMT-08"},
-            {label: "GMT-07", value: "GMT-07"},
-            {label: "GMT-06", value: "GMT-06"},
-            {label: "GMT-05", value: "GMT-05"},
-            {label: "GMT-04", value: "GMT-04"},
-            {label: "GMT-03", value: "GMT-03"},
-            {label: "GMT-02", value: "GMT-02"},
-            {label: "GMT-01", value: "GMT-01"},
-            {label: "GMT", value: "GMT"},
-            {label: "GMT+01", value: "GMT+01"},
-            {label: "GMT+02", value: "GMT+02"},
-            {label: "GMT+03", value: "GMT+03"},
-            {label: "GMT+04", value: "GMT+04"},
-            {label: "GMT+05", value: "GMT+05"},
-            {label: "GMT+06", value: "GMT+06"},
-            {label: "GMT+07", value: "GMT+07"},
-            {label: "GMT+08", value: "GMT+08"},
-            {label: "GMT+09", value: "GMT+09"},
-            {label: "GMT+10", value: "GMT+10"},
-            {label: "GMT+11", value: "GMT+11"},
-            {label: "GMT+12", value: "GMT+12"},
-          ]} />
+          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={timeZones} />
         </Stack>
       </DebFormModal>
     </Box>
