@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 import { timeZones } from "constants/timeZones";
+import { branchValidationSchema } from "schemas/branch";
 
 
 const newBranchValues = {
@@ -43,6 +44,7 @@ const Branches = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
+ 
     try {
       if (values.id) {
         //estamos editando
@@ -158,7 +160,7 @@ const Branches = () => {
         onReject={closeModal}
         initialValues={modalInitialValues}
         onSubmit={handleSubmit}
-        formikProps={{ enableReinitialize: true }}
+        formikProps={{ enableReinitialize: true, validationSchema: branchValidationSchema }}
         headerText={
           modalInitialValues?.id ? "Editar Sucursal" : "Crear Sucursal"
         }>
