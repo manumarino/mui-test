@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 import { timeZones } from "constants/timeZones";
 import { branchValidationSchema } from "schemas/branch";
+import { company } from "services/companies";
 
 
 const newBranchValues = {
@@ -32,14 +33,20 @@ const Branches = () => {
   const [modalInitialValues, setModalInitialValues] =
     useState(newBranchValues);
   const [branches, setBranches] = useState([]);
+  const [companies, setCompanies] = useState([]);
 
   const getBranches = async () => {
     setBranches(await branch.getAll());
   };
+  const getCompanies = async () => {
+    setCompanies(await company.getAll());
+  };
 
   useEffect(() => {
     getBranches();
+    getCompanies();
   }, []);
+
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -171,7 +178,15 @@ const Branches = () => {
           <DebFormTextInput label={"País"} name={"pais"} />
           <DebFormTextInput label={"Latitud"} name={"latitude"} />
           <DebFormTextInput label={"Longitud"} name={"longitude"} />
-          <DebFormTextInput label={"Id de Compañía"} name={"company.id"} />
+          <DebFormSelect
+            label={"Compañía"}
+            name={"company.id"}
+            selectOptions={companies.map((company) => 
+              {return {
+                value: company.id,
+                label: company.name
+              }})}
+            />
           <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={timeZones} />
         </Stack>
       </DebFormModal>
