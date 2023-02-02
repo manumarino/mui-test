@@ -11,10 +11,27 @@ import {API_LICENSES} from "../constants/urls"
  * @returns 
  */
 
+// export const license = {
+//     getAll: async () => (await api.get(API_LICENSES)).data,
+//     getById: async (id) => (await api.get(`${API_LICENSES}/${id}`)).data,
+//     create: async (license) => (await api.post(API_LICENSES, license)).data,
+//     update: async (license) => (await api.put(`${API_LICENSES}/${license.id}`, license)).data,
+//     delete: async (id) => (await api.delete(`${API_LICENSES}/${id}`)).data,
+// }
+
+
 export const license = {
-    getAll: async () => (await api.get(API_LICENSES)).data,
-    getById: async (id) => (await api.get(`${API_LICENSES}/${id}`)).data,
-    create: async (license) => (await api.post(API_LICENSES, license)).data,
-    update: async (license) => (await api.put(`${API_LICENSES}/${license.id}`, license)).data,
-    delete: async (id) => (await api.delete(`${API_LICENSES}/${id}`)).data,
+    getAll: async () => {
+        return Promise.resolve([
+            {
+                id: 1,
+                name: "licencia"
+            }
+    ])
+    },
+    create: async (license) => {
+        console.log(license)
+        return Promise.resolve(license);
+    }
+   
 }
