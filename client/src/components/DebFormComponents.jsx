@@ -120,8 +120,10 @@ export function DebFormMultiSelect({
 export function DebDatePickerInput({ label, ...props }) {
   const {setFieldValue} = useFormikContext();
   const [field, meta] = useField(props);
+  const error = meta.touched && meta.error ? true : false;
   return (
-    <DatePicker
+    <FormControl>
+      <DatePicker
             label={label}
             {...field}
             {...props}
@@ -130,8 +132,13 @@ export function DebDatePickerInput({ label, ...props }) {
             onChange={val => {
               setFieldValue(field.name, val);
             }}
+            error={error}
             
         />
+        <FormHelperText error={error}>
+          {meta.touched && meta.error ? meta.error : " "}
+        </FormHelperText>
+      </FormControl>
     
   );
 }

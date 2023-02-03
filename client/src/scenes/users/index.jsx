@@ -152,7 +152,7 @@ function Users() {
         headerText={
           modalInitialValues?.id ? "Editar Usuario" : "Crear Usuario"
         }>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <DebFormTextInput label={"Nombre"} name={"name"} />
           <DebFormTextInput label={"Email"} name={"email"} />
           <DebFormTextInput label={"Contraseña"} name={"password"} />

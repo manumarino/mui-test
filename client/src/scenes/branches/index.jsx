@@ -201,7 +201,7 @@ const Branches = () => {
         headerText={
           modalInitialValues?.id ? "Editar Sucursal" : "Crear Sucursal"
         }>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <DebFormTextInput label={"Nombre"} name={"name"} />
           <DebFormTextInput label={"Dirección"} name={"direccion"} />
           <DebFormTextInput label={"Estado"} name={"estado"} />

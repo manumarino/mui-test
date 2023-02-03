@@ -10,7 +10,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 import { company } from "services/companies";
+import { branch } from "services/branches";
 import {format} from 'date-fns';
+import { licenseValidationSchema } from "schemas/licenses";
 
 const newLicenseValues = {
   system: "",
@@ -36,13 +38,12 @@ const Licenses = () => {
     const getCompanies = async ()  => {
     setCompanies(await company.getAll());
   };
-/*
+
    const [branches, setBranches] = useState([]);
     const getBranches = async ()  => {
-      FILTRAR LO SIGUIENTE
     setBranches(await branch.getAll());
   };
-  */
+
 
   useEffect(() => {
     getLicenses();
@@ -186,11 +187,11 @@ const Licenses = () => {
         onReject={closeModal}
         initialValues={modalInitialValues}
         onSubmit={handleSubmit}
-        formikProps={{ enableReinitialize: true }}
+        formikProps={{ enableReinitialize: true, validationSchema: licenseValidationSchema }}
         headerText={
           modalInitialValues?.id ? "Editar Licencia" : "Crear Licencia"
         }>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
         <DebFormSelect
             label={"Compañía"}
             name={"company.id"}
