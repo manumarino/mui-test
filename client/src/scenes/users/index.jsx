@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
 import { DebFormTextInput } from "components/DebFormComponents";
@@ -108,9 +108,14 @@ function Users() {
         loading={!users.length}
         rows={users}
         columns={[
-          { field: "id", headerName: "ID", flex: 0.5 },
-          { field: "name", headerName: "Nombre", flex: 1 },
-          { field: "email", headerName: "Email", flex: 1 },
+          { field: "id", headerName: "ID", flex: 0.1 },
+          { field: "name", headerName: "Nombre", flex: 0.7,
+        renderCell: (params) => (
+          <Tooltip title={params.value} arrow>
+              <span className="table-cell-trucate">{params.value}</span>
+          </Tooltip>
+      ) },
+          { field: "email", headerName: "Email", flex: 0.7},
         ]}
         rowActions={[
           {

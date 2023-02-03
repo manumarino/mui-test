@@ -11,8 +11,9 @@ import {
   ListItemText,
   FormHelperText,
 } from "@mui/material";
-import { useField } from "formik";
-import React from "react";
+import { useField, useFormikContext } from "formik";
+import React, {useState} from "react";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 export function DebFormTextInput({ label, ...props }) {
   const [field, meta, helper] = useField(props);
@@ -31,6 +32,7 @@ export function DebFormTextInput({ label, ...props }) {
   );
 }
 
+
 export function DebFormCheckbox({ label, ...props }) {
   const [field, meta] = useField(props);
   return (
@@ -42,6 +44,7 @@ export function DebFormCheckbox({ label, ...props }) {
     </FormGroup>
   );
 }
+
 
 export function DebFormSelect({ label, selectOptions, ...props }) {
   const [field, meta] = useField(props);
@@ -114,6 +117,26 @@ export function DebFormMultiSelect({
   );
 }
 
+export function DebDatePickerInput({ label, ...props }) {
+  const {setFieldValue} = useFormikContext();
+  const [field, meta] = useField(props);
+  return (
+    <DatePicker
+            label={label}
+            {...field}
+            {...props}
+            renderInput={(params) => <TextField {...params} />}
+            selected={(field.value && new Date(field.value)) || null}
+            onChange={val => {
+              setFieldValue(field.name, val);
+            }}
+            
+        />
+    
+  );
+}
+
+
 export function formBuilder(fields) {
   return (
     <>
@@ -154,6 +177,15 @@ export function formBuilder(fields) {
                 label={field.label}
                 name={field.name}
                 selectOptions={field.selectOptions}
+              />
+            );
+            case "datePicker":
+            return (
+              <DebDatePickerInput
+                key={field.name}
+                label={field.label}
+                name={field.name}
+                select={field.value}
               />
             );
             break;

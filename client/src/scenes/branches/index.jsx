@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
 import { DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
@@ -21,10 +21,11 @@ const newBranchValues = {
   pais: "",
   latitude: "",
   longitude: "",
+  timeZone: "",
   company: {
     id: "",
   },
-  timeZone: "",
+  
 };
 
 
@@ -119,23 +120,52 @@ const Branches = () => {
       console.log(("Ocurrió un error eliminando la sucursal: " + error.message))
     }
   };
+
+  const columns = [
+    { field: "id", headerName: "ID", flex: 0.1 },
+    { field: "name", headerName: "Nombre", flex: 0.7, headerAlign: 'center', align: 'center',
+    renderCell: (params) => (
+      <Tooltip title={params.value} arrow>
+           <span className="table-cell-trucate">{params.value}</span>
+      </Tooltip>
+  )  },
+    { field: "direccion", headerName: "Dirección", flex: 1, headerAlign: 'center', align: 'left',
+    renderCell: (params) => (
+      <Tooltip title={params.value} arrow>
+           <span className="table-cell-trucate">{params.value}</span>
+      </Tooltip>
+  )  },
+    { field: "estado", headerName: "Estado", flex: 0.9, headerAlign: 'center', align: 'center',
+    renderCell: (params) => (
+      <Tooltip title={params.value} arrow>
+           <span className="table-cell-trucate">{params.value}</span>
+      </Tooltip>
+  )  },
+    { field: "pais", headerName: "País", flex: 0.8, headerAlign: 'center', align: 'center',
+    renderCell: (params) => (
+      <Tooltip title={params.value} arrow>
+           <span className="table-cell-trucate">{params.value}</span>
+      </Tooltip>
+  )  },
+    { field: "latitude", headerName: "Latitud", flex: 0.5, headerAlign: 'center', align: 'center'  },
+    { field: "longitude", headerName: "Longitud", flex: 0.5, headerAlign: 'center', align: 'center'  },
+    { field: "timeZone", headerName: "Zona Horaria (GMT)", flex: 1, headerAlign: 'center', align: 'center',
+    renderCell: (params) => {
+      return ("GMT"+params.value);
+    }, },
+    { field: "company.id", headerName: "ID de Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
+    renderCell: (params) => {
+      return params.row.company.name;
+    }, },
+  ];
+
   return (
     <Box>
       <Header title="SUCURSALES" subtitle="Lista de Sucursales" />
       <DataTable
         loading={!branches.length}
         rows={branches}
-        columns={[
-          { field: "id", headerName: "ID", flex: 0.5 },
-          { field: "name", headerName: "Nombre", flex: 1 },
-          { field: "direccion", headerName: "Dirección", flex: 1 },
-          { field: "estado", headerName: "Estado", flex: 1 },
-          { field: "pais", headerName: "País", flex: 1 },
-          { field: "latitude", headerName: "Latitud", flex: 1 },
-          { field: "longitude", headerName: "Longitud", flex: 1 },
-          { field: "company.id", headerName: "ID de Compañía", flex: 1 },
-          { field: "timeZone", headerName: "Zona Horaria", flex: 1 },
-        ]}
+        columns={columns}
         rowActions={[
           {
             label: "Editar",
@@ -178,6 +208,7 @@ const Branches = () => {
           <DebFormTextInput label={"País"} name={"pais"} />
           <DebFormTextInput label={"Latitud"} name={"latitude"} />
           <DebFormTextInput label={"Longitud"} name={"longitude"} />
+          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={timeZones} />
           <DebFormSelect
             label={"Compañía"}
             name={"company.id"}
@@ -187,7 +218,6 @@ const Branches = () => {
                 label: company.name
               }})}
             />
-          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={timeZones} />
         </Stack>
       </DebFormModal>
     </Box>

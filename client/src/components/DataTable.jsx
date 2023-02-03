@@ -448,7 +448,7 @@ function CustomToolbar(props) {
       {props.showQuickFilter && (
         <GridToolbarQuickFilter {...props.quickFilterProps} />
       )}
-      <Box sx={{ flex: 0.05}} />
+      <Box sx={{ flex: 0.1}} />
       <DebButtonWithDropdown
         {...props.debButtonWithDropdownProps}
         sx={{

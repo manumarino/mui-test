@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
 import { DebFormMultiSelect, DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
@@ -116,10 +116,29 @@ function Companies() {
         loading={!companies.length}
         rows={companies}
         columns={[
-          { field: "id", headerName: "ID", flex: 0.5 },
-          { field: "name", headerName: "Nombre", flex: 1 },
-          { field: "dominio", headerName: "Dominio", flex: 1 },
-          { field: "extension", headerName: "Extension", flex: 1 },
+          { field: "id", headerName: "ID", flex: 0.1 },
+          { field: "name", headerName: "Nombre", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )  },
+          { field: "dominio", headerName: "Dominio", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )  },
+          { field: "extension", headerName: "Extension", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )  },
+          { field: "timeZone", headerName: "Zona Horaria (GMT)", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => {
+            return ("GMT"+params.value);
+          }, },
         ]}
         rowActions={[
           {
