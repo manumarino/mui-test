@@ -15,6 +15,8 @@ import MobileConnection from "scenes/mobile-connection";
 import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
 import { SnackbarProvider } from 'notistack';
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 
 
 i18next.init({
@@ -38,21 +40,23 @@ function App() {
             vertical: 'bottom',
             horizontal: 'right',
           }}>
-            <CssBaseline />
-            <Routes>
-              <Route element={<Layout />}>
-                <Route path="/" element={<Navigate to="/debdash" replace />} />
-                <Route path="/debdash/*" element={<Dashboard />} />
-                <Route path="/companies/*" element={<Companies />} />
-                <Route path="/branches/*" element={<Branches />} />
-                <Route path="/licenses/*" element={<Licenses />} />
-                <Route path="/users/*" element={<Users />} />
-                <Route path="/mobile-connection/*" element={<MobileConnection />} />
-              </Route>
-            </Routes>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <CssBaseline />
+                <Routes>
+                  <Route element={<Layout />}>
+                    <Route path="/" element={<Navigate to="/debdash" replace />} />
+                    <Route path="/debdash/*" element={<Dashboard />} />
+                    <Route path="/companies/*" element={<Companies />} />
+                    <Route path="/branches/*" element={<Branches />} />
+                    <Route path="/licenses/*" element={<Licenses />} />
+                    <Route path="/users/*" element={<Users />} />
+                    <Route path="/mobile-connection/*" element={<MobileConnection />} />
+                  </Route>
+                </Routes>
+              </LocalizationProvider>
             </SnackbarProvider>
           </ThemeProvider>
-        </BrowserRouter>
+        </BrowserRouter>        
       </I18nextProvider>
     </div>
   );

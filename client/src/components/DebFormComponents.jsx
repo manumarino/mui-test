@@ -8,10 +8,12 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
-  ListItemText
+  ListItemText,
+  FormHelperText
 } from "@mui/material";
-import { useField } from "formik";
-import React from "react";
+import { useField, useFormikContext } from "formik";
+import React, {useState} from "react";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 export function DebFormTextInput({ label, ...props }) {
   const [field, meta] = useField(props);
@@ -28,6 +30,7 @@ export function DebFormTextInput({ label, ...props }) {
   );
 }
 
+
 export function DebFormCheckbox({ label, ...props }) {
   const [field, meta] = useField(props);
   return (
@@ -40,12 +43,14 @@ export function DebFormCheckbox({ label, ...props }) {
   );
 }
 
+
 export function DebFormSelect({ label, selectOptions, ...props }) {
   const [field, meta] = useField(props);
+  const error = meta.touched && meta.error ? true : false;
   return (
     <FormControl fullWidth>
-      <InputLabel>{label}</InputLabel>
-      <Select label={label} {...field} {...props}>
+      <InputLabel error={error}>{label}</InputLabel>
+      <Select id={`deb-from-select-${props.name}`} label={label} {...field} {...props} error={error}>
         {selectOptions.map((option) => {
           return (
             <MenuItem key={option.value} value={option.value}>
@@ -54,6 +59,9 @@ export function DebFormSelect({ label, selectOptions, ...props }) {
           );
         })}
       </Select>
+      <FormHelperText error={error}>
+        {meta.touched && meta.error ? meta.error : " "}
+      </FormHelperText>
     </FormControl>
   );
 }
@@ -100,6 +108,25 @@ export function DebFormMultiSelect({
         </Select>
       </FormControl>
     </div>
+  );
+}
+
+export function DebDatePickerInput({ label, ...props }) {
+  const {setFieldValue} = useFormikContext();
+  const [field, meta] = useField(props);
+  return (
+    <DatePicker
+            label={label}
+            {...field}
+            {...props}
+            renderInput={(params) => <TextField {...params} />}
+            selected={(field.value && new Date(field.value)) || null}
+            onChange={val => {
+              setFieldValue(field.name, val);
+            }}
+            
+        />
+    
   );
 }
 
