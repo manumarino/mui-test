@@ -9,23 +9,25 @@ import {
   MenuItem,
   OutlinedInput,
   ListItemText,
-  FormHelperText
+  FormHelperText,
 } from "@mui/material";
 import { useField, useFormikContext } from "formik";
 import React, {useState} from "react";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 export function DebFormTextInput({ label, ...props }) {
-  const [field, meta] = useField(props);
+  const [field, meta, helper] = useField(props);
+
   return (
     <TextField
+      id={`deb-form-text-input-${props.name}`}
       sx={{ width: "100%" }}
       variant="outlined"
       label={label}
       {...field}
       {...props}
       error={meta.touched && meta.error ? true : false}
-      helperText={meta.error}
+      helperText={meta.touched && meta.error ? meta.error : " "}
     />
   );
 }
@@ -74,7 +76,7 @@ export function DebFormMultiSelect({
   ...props
 }) {
   const [field, meta] = useField(props);
-
+  const error = meta.touched && meta.error ? true : false;
   const MenuProps = {
     PaperProps: {
       style: {
@@ -86,11 +88,11 @@ export function DebFormMultiSelect({
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">{label}</InputLabel>
+      <FormControl fullWidth>
+        <InputLabel>{label}</InputLabel>
         <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
+          label={label}
+          id={`deb-from-multi-select-${props.name}`}
           multiple
           input={<OutlinedInput label={label} />}
           renderValue={(selected) =>
@@ -98,7 +100,8 @@ export function DebFormMultiSelect({
           }
           MenuProps={MenuProps}
           {...field}
-          {...props}>
+          {...props}
+          error={error}>
           {selectOptions?.map((option) => (
             <MenuItem key={option.value} value={option}>
               <Checkbox checked={field.value.includes(option)} />
@@ -106,6 +109,9 @@ export function DebFormMultiSelect({
             </MenuItem>
           ))}
         </Select>
+        <FormHelperText error={error}>
+          {meta.touched && meta.error ? meta.error : " "}
+        </FormHelperText>
       </FormControl>
     </div>
   );
@@ -129,6 +135,7 @@ export function DebDatePickerInput({ label, ...props }) {
     
   );
 }
+
 
 export function formBuilder(fields) {
   return (
@@ -163,16 +170,25 @@ export function formBuilder(fields) {
               />
             );
             break;
-            case "multiSelect":
-              return (
-                <DebFormMultiSelect
-                  key={field.name}
-                  label={field.label}
-                  name={field.name}
-                  selectOptions={field.selectOptions}
-                />
-              );
-              break;
+          case "multiSelect":
+            return (
+              <DebFormMultiSelect
+                key={field.name}
+                label={field.label}
+                name={field.name}
+                selectOptions={field.selectOptions}
+              />
+            );
+            case "datePicker":
+            return (
+              <DebDatePickerInput
+                key={field.name}
+                label={field.label}
+                name={field.name}
+                select={field.value}
+              />
+            );
+            break;
           default:
             break;
         }

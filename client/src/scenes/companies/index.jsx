@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Box, Stack, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
-import { DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
+import { DebFormMultiSelect, DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
 import DataTable from "components/DataTable";
 import { company } from "services/companies";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
+import { companyValidationSchema } from "schemas/company";
 import { timeZones } from "constants/timeZones";
 
 
@@ -22,6 +23,7 @@ const newCompanyValues = {
   debqPassword: "",
   timeZone: "",
 };
+
 
 function Companies() {
   const [modalState, setModalState] = useState(false);
@@ -169,11 +171,11 @@ function Companies() {
         onReject={closeModal}
         initialValues={modalInitialValues}
         onSubmit={handleSubmit}
-        formikProps={{ enableReinitialize: true }}
+        formikProps={{ enableReinitialize: true , validationSchema: companyValidationSchema}}
         headerText={
           modalInitialValues?.id ? "Editar Compañía" : "Crear Compañía"
         }>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <DebFormTextInput label={"Nombre"} name={"name"} />
           <DebFormTextInput label={"Logo"} name={"logo"} />
           <DebFormTextInput label={"Domino"} name={"dominio"} />
