@@ -1,39 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
 import { DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
 import DataTable from "components/DataTable";
-import { company } from "services/companies";
+import { company as surveyCompany } from "services/companies";
+import { mobileConnection } from "services/mobile-connection";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 
 
-const newCompanyValues = {
-  name: "",
-  logo: "",
-  dominio: "",
-  extension: "",
-  debqUrl: "",
-  debqUser: "",
-  debqPassword: "",
-  timeZone: "",
-};
+const newMobileConnectionValues = {
+  id: "",
+  urlMobile: "",
+  surveyCompany:  {    
+    id: "",
+  },
+  userMobile: "",
+  passwordMobile: "",
+  tokenMobile: "",
+}
 
-const MobileConnection = () => {
+const MobileConnections = () => {
 const [modalState, setModalState] = useState(false);
-  const [modalInitialValues, setModalInitialValues] =
-    useState(newCompanyValues);
+  const [modalInitialValues, setModalInitialValues] = useState(newMobileConnectionValues);
+  const [mobileConnections, setMobileConnections] = useState([]);
   const [companies, setCompanies] = useState([]);
 
+  const getMobileConnections = async () => {
+    setMobileConnections(await mobileConnection.getAll());
+  };
   const getCompanies = async () => {
-    setCompanies(await company.getAll());
+    setCompanies(await surveyCompany.getAll());
   };
 
   useEffect(() => {
+    getMobileConnections();
     getCompanies();
+    console.log(surveyCompany)
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -42,33 +48,33 @@ const [modalState, setModalState] = useState(false);
     try {
       if (values.id) {
         //estamos editando
-        const res = await company.update(values);
-        enqueueSnackbar('Compañía editada', { 
+        const res = await mobileConnection.update(values);
+        enqueueSnackbar('Conexión editada', { 
           preventDuplicate: true, 
           variant: 'success'
       });
       } else {
-        const res = await company.create(values);
-        enqueueSnackbar('Compañía creada', { 
+        const res = await mobileConnection.create(values);
+        enqueueSnackbar('Conexión creada', { 
           preventDuplicate: true, 
           variant: 'success'
       });
       }
       closeModal();
-      getCompanies();
+      getMobileConnections();
     } catch (error) {
       if(values.id) {        
-      enqueueSnackbar("Ocurrió un error al editar la compañía", { 
+      enqueueSnackbar("Ocurrió un error al editar la conexión", { 
         preventDuplicate: true, 
         variant: 'error'
     });
-      console.log("Ocurrió un error al editar la compañía: " + error.message);
+      console.log("Ocurrió un error al editar la conexión: " + error.message);
       } else {        
-      enqueueSnackbar("Ocurrió un error al crear la compañía", { 
+      enqueueSnackbar("Ocurrió un error al crear la conexión", { 
         preventDuplicate: true, 
         variant: 'error'
     });
-      console.log("Ocurrió un error al crear la compañía: " + error.message);
+      console.log("Ocurrió un error al crear la conexión: " + error.message);
       }
     }
   };
@@ -79,44 +85,57 @@ const [modalState, setModalState] = useState(false);
 
   const closeModal = () => {
     setModalState(false);
-    setModalInitialValues(newCompanyValues);
+    setModalInitialValues(newMobileConnectionValues);
   };
 
-  const handleEdit = (company) => {
-    setModalInitialValues(company);
+  const handleEdit = (mobileConnection) => {
+    setModalInitialValues(mobileConnection);
     openModal();
   };
-  const handleCreateCompany = () => {
-    setModalInitialValues(newCompanyValues);
+  const handleCreateMobileConnection = () => {
+    setModalInitialValues(newMobileConnectionValues);
     openModal();
   };
-  const handleDelete = async (selectedCompany) => {
+  const handleDelete = async (selectedMobileConnection) => {
     try {
-      const res = await company.delete(selectedCompany.id);
-      enqueueSnackbar(("Se eliminó la compañía" + selectedCompany.name), { 
+      const res = await mobileConnection.delete(selectedMobileConnection.id);
+      enqueueSnackbar(("Se eliminó la conexión con " + selectedMobileConnection.urlMobile), { 
         preventDuplicate: true, 
         variant: 'success'
     });
-      getCompanies();
+      getMobileConnections();
     } catch (error) {
-      enqueueSnackbar("Ocurrió un error eliminando la compañía", { 
+      enqueueSnackbar("Ocurrió un error eliminando la conexión", { 
         preventDuplicate: true, 
         variant: 'error'
     } );
-      console.log(("Ocurrió un error eliminando la compañía: " + error.message))
+      console.log(("Ocurrió un error eliminando la conexión: " + error.message))
     }
   };
   return (
     <Box>
-      <Header title="COMPAÑÍAS" subtitle="Lista de Compañías" />
+      <Header title="CONEXIONES MÓBILES" subtitle="Lista de Conexiones Móbiles" />
       <DataTable
-        loading={!companies.length}
-        rows={companies}
+        loading={!mobileConnections.length}
+        rows={mobileConnections}
         columns={[
-          { field: "id", headerName: "ID", flex: 0.5 },
-          { field: "name", headerName: "Nombre", flex: 1 },
-          { field: "dominio", headerName: "Dominio", flex: 1 },
-          { field: "extension", headerName: "Extension", flex: 1 },
+          { field: "id", headerName: "ID", flex: 0.1 },
+          { field: "urlMobile", headerName: "URL Móbil", flex: 0.7,
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )   },
+          { field: "surveyCompany.id", headerName: "Compañía de encuestas", flex: 0.7,
+          renderCell: (params) => {
+            return params.row.surveyCompany.name;
+          }, },
+          { field: "userMobile", headerName: "Usuario", flex: 0.7, 
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )   },
         ]}
         rowActions={[
           {
@@ -133,14 +152,14 @@ const [modalState, setModalState] = useState(false);
         ]}
         headerActions={[
           {
-            label: "Crear Compañía",
+            label: "Crear Conexión",
             icon: <AddBoxIcon/>,
-            action: handleCreateCompany,
+            action: handleCreateMobileConnection,
           },
         ]}
       />
 
-      {/* MODAL DE CREACIÓN / EDICIÓN DE COMPAÑÍA */}
+      {/* MODAL DE CREACIÓN / EDICIÓN DE CONEXIÓN MÓBIL */}
       <DebFormModal
         maxWidth="sm"
         fullWidth={true}
@@ -151,27 +170,26 @@ const [modalState, setModalState] = useState(false);
         onSubmit={handleSubmit}
         formikProps={{ enableReinitialize: true }}
         headerText={
-          modalInitialValues?.id ? "Editar Compañía" : "Crear Compañía"
+          modalInitialValues?.id ? "Editar Conexión" : "Crear Conexión"
         }>
         <Stack spacing={2}>
-          <DebFormTextInput label={"Nombre"} name={"name"} />
-          <DebFormTextInput label={"Logo"} name={"logo"} />
-          <DebFormTextInput label={"Domino"} name={"dominio"} />
-          <DebFormTextInput label={"Extension"} name={"extension"} />
+          <DebFormTextInput label={"ID"} name={"id"} />
+          <DebFormTextInput label={"URL Móbil"} name={"urlMobile"} />
+          <DebFormSelect label={"Compañía de encuestas"} name={"surveyCompany.id"} 
+           selectOptions={companies.map((surveyCompany) => 
+            {return {
+              value: surveyCompany.id,
+              label: surveyCompany.name
+            }})}
+           />
+          <DebFormTextInput label={"Usuario"} name={"userMobile"} />
           <DebFormTextInput
-            label={"URL de Conexión con debQ"}
-            name={"debqUrl"}
+            label={"Contraseña de servicio Mobile"}
+            name={"passwordMobile"}
           />
-          <DebFormTextInput label={"Usuario de debQ"} name={"debqUser"} />
-          <DebFormTextInput
-            label={"Contraseña de debQ"}
-            name={"debqPassword"}
-          />
-          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={[
-            {label: "GMT-12", value: "GMT-12"},
-
-            {label: "GMT+12", value: "GMT+12"},
-          ]} />
+          <DebFormTextInput 
+          label={"Token de servicio Mobile"} 
+          name={"tokenMobile"} />         
         </Stack>
       </DebFormModal>
     </Box>
@@ -179,6 +197,6 @@ const [modalState, setModalState] = useState(false);
 }
 
 
-export default MobileConnection;
+export default MobileConnections;
 
 
