@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, TextField, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
-import { DebFormCheckbox, DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
+import { DebDatePickerInput, DebFormMultiSelect, DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
 import DataTable from "components/DataTable";
 import { license } from "services/licenses";
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -10,34 +10,45 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 import { company } from "services/companies";
-
+import {format} from 'date-fns';
 
 const newLicenseValues = {
   system: "",
   expired_date: "",
   details: "",
+  company: {
+    id: "",
+  },
   branchesList: [],
 };
 
 const Licenses = () => {
 
   const [modalState, setModalState] = useState(false);
-  const [modalInitialValues, setModalInitialValues] =
-    useState(newLicenseValues);
-  const [licenses, setLicenses] = useState([]);
-  const [companies, setCompanies] = useState([]);
-  const getCompanies = async ()  => {
-    setCompanies(await company.getAll());
-  };
+  const [modalInitialValues, setModalInitialValues] = useState(newLicenseValues);
 
+  const [licenses, setLicenses] = useState([]);
   const getLicenses = async () => {
     setLicenses(await license.getAll());
   };
 
+  const [companies, setCompanies] = useState([]);
+    const getCompanies = async ()  => {
+    setCompanies(await company.getAll());
+  };
+/*
+   const [branches, setBranches] = useState([]);
+    const getBranches = async ()  => {
+      FILTRAR LO SIGUIENTE
+    setBranches(await branch.getAll());
+  };
+  */
+
   useEffect(() => {
     getLicenses();
+    getCompanies();
   }, []);
-
+ 
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
@@ -109,24 +120,6 @@ const Licenses = () => {
     }
   };
 
-  const sucursales1 = ["suc1", "suc2", "suc3"];
-  const sucursales = [
-    {
-      id: 1,
-      name: "Sucursal 1",
-      localidad: "laloma1"
-    },
-    {
-      id: 2,
-      name: "Sucursal 2",
-      localidad: "laloma2"
-    },
-    {
-      id: 3,
-      name: "Sucursal 3",
-      localidad: "laloma3"
-    },
-  ];
   return (
     <Box>
       <Header title="LICENCIAS" subtitle="Lista de Licencias" />
@@ -134,11 +127,33 @@ const Licenses = () => {
         loading={!licenses.length}
         rows={licenses}
         columns={[
-          { field: "id", headerName: "ID", flex: 0.5 },
-          { field: "system", headerName: "Sistema", flex: 1 },
-          { field: "expired_date", headerName: "Fecha de Expiración", flex: 1 },
-          { field: "details", headerName: "Detalles", flex: 1 },
-          { field: "branchesList", headerName: "Lista de Sucursales", flex: 1 }
+          { field: "id", headerName: "ID", flex: 0.1 },
+          { field: "company.id", headerName: "ID de Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
+          renderCell: (params) => {
+            return params.row.company.name;
+          }, },         
+          { field: "system", headerName: "Sistema", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )   },
+          { field: "expired_date", headerName: "Fecha de Expiración",
+          renderCell: params => 
+          format(new Date(params.value), "dd/MM/yyyy"),
+           flex: 1, headerAlign: 'center', align: 'center'},
+          { field: "details", headerName: "Detalles", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )   },
+          { field: "branchesList", headerName: "Lista de Sucursales", flex: 1,  headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )    }
         ]}
         rowActions={[
           {
@@ -176,17 +191,23 @@ const Licenses = () => {
           modalInitialValues?.id ? "Editar Licencia" : "Crear Licencia"
         }>
         <Stack spacing={2}>
+        <DebFormSelect
+            label={"Compañía"}
+            name={"company.id"}
+            selectOptions={companies.map((company) => 
+              {return {
+                value: company.id,
+                label: company.name
+              }})}
+            />
           <DebFormSelect label={"Sistema"} name={"system"} selectOptions={[
             {label: "Citas", value: "APPOINTMENTS"},
             {label: "Mobile", value: "MOBILE"},
             {label: "Ecuestas", value: "SURVEY"},
           ]} />
-          <DebFormTextInput label={"Fecha de expiración"} name={"expired_date"} />
           <DebFormTextInput label={"Detalles"} name={"details"} />
-          <DebFormTextInput label={"Lista de Sucursales"} name={"branchesList"} />
-          {sucursales.map((sucursal) => (
-              <DebFormCheckbox label={sucursal.name} value={sucursal.id} name={"branchesList"} />
-              ) )}
+          <DebDatePickerInput label={"Fecha de expiración"} name={"expired_date"} />
+          
         </Stack>
       </DebFormModal>
     </Box>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
 import { DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
@@ -9,6 +9,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
+import { timeZones } from "constants/timeZones";
 
 
 const newCompanyValues = {
@@ -113,10 +114,29 @@ function Companies() {
         loading={!companies.length}
         rows={companies}
         columns={[
-          { field: "id", headerName: "ID", flex: 0.5 },
-          { field: "name", headerName: "Nombre", flex: 1 },
-          { field: "dominio", headerName: "Dominio", flex: 1 },
-          { field: "extension", headerName: "Extension", flex: 1 },
+          { field: "id", headerName: "ID", flex: 0.1 },
+          { field: "name", headerName: "Nombre", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )  },
+          { field: "dominio", headerName: "Dominio", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )  },
+          { field: "extension", headerName: "Extension", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => (
+            <Tooltip title={params.value} arrow>
+                 <span className="table-cell-trucate">{params.value}</span>
+            </Tooltip>
+        )  },
+          { field: "timeZone", headerName: "Zona Horaria (GMT)", flex: 1, headerAlign: 'center', align: 'center',
+          renderCell: (params) => {
+            return ("GMT"+params.value);
+          }, },
         ]}
         rowActions={[
           {
@@ -167,33 +187,7 @@ function Companies() {
             label={"Contraseña de debQ"}
             name={"debqPassword"}
           />
-          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={[
-            {label: "GMT-12", value: "-12"},
-            {label: "GMT-11", value: "-11"},
-            {label: "GMT-10", value: "-10"},
-            {label: "GMT-09", value: "-9"},
-            {label: "GMT-08", value: "-8"},
-            {label: "GMT-07", value: "-7"},
-            {label: "GMT-06", value: "-6"},
-            {label: "GMT-05", value: "-5"},
-            {label: "GMT-04", value: "-4"},
-            {label: "GMT-03", value: "-3"},
-            {label: "GMT-02", value: "-2"},
-            {label: "GMT-01", value: "-1"},
-            {label: "GMT", value: "+0"},
-            {label: "GMT+01", value: "+1"},
-            {label: "GMT+02", value: "+2"},
-            {label: "GMT+03", value: "+3"},
-            {label: "GMT+04", value: "+4"},
-            {label: "GMT+05", value: "+5"},
-            {label: "GMT+06", value: "+6"},
-            {label: "GMT+07", value: "+7"},
-            {label: "GMT+08", value: "+8"},
-            {label: "GMT+09", value: "+9"},
-            {label: "GMT+10", value: "+10"},
-            {label: "GMT+11", value: "+11"},
-            {label: "GMT+12", value: "+12"},
-          ]} />
+          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={timeZones} />
         </Stack>
       </DebFormModal>
     </Box>

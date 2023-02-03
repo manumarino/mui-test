@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
 import { DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
@@ -9,6 +9,9 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
+import { timeZones } from "constants/timeZones";
+
+import { company } from "services/companies";
 
 
 const newBranchValues = {
@@ -31,13 +34,18 @@ const Branches = () => {
   const [modalInitialValues, setModalInitialValues] =
     useState(newBranchValues);
   const [branches, setBranches] = useState([]);
+  const [companies, setCompanies] = useState([]);
 
   const getBranches = async () => {
     setBranches(await branch.getAll());
   };
+  const getCompanies = async () => {
+    setCompanies(await company.getAll());
+  };
 
   useEffect(() => {
     getBranches();
+    getCompanies();
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -110,27 +118,52 @@ const Branches = () => {
       console.log(("Ocurrió un error eliminando la sucursal: " + error.message))
     }
   };
+
+  const columns = [
+    { field: "id", headerName: "ID", flex: 0.1 },
+    { field: "name", headerName: "Nombre", flex: 0.7, headerAlign: 'center', align: 'center',
+    renderCell: (params) => (
+      <Tooltip title={params.value} arrow>
+           <span className="table-cell-trucate">{params.value}</span>
+      </Tooltip>
+  )  },
+    { field: "direccion", headerName: "Dirección", flex: 1, headerAlign: 'center', align: 'left',
+    renderCell: (params) => (
+      <Tooltip title={params.value} arrow>
+           <span className="table-cell-trucate">{params.value}</span>
+      </Tooltip>
+  )  },
+    { field: "estado", headerName: "Estado", flex: 0.9, headerAlign: 'center', align: 'center',
+    renderCell: (params) => (
+      <Tooltip title={params.value} arrow>
+           <span className="table-cell-trucate">{params.value}</span>
+      </Tooltip>
+  )  },
+    { field: "pais", headerName: "País", flex: 0.8, headerAlign: 'center', align: 'center',
+    renderCell: (params) => (
+      <Tooltip title={params.value} arrow>
+           <span className="table-cell-trucate">{params.value}</span>
+      </Tooltip>
+  )  },
+    { field: "latitude", headerName: "Latitud", flex: 0.5, headerAlign: 'center', align: 'center'  },
+    { field: "longitude", headerName: "Longitud", flex: 0.5, headerAlign: 'center', align: 'center'  },
+    { field: "timeZone", headerName: "Zona Horaria (GMT)", flex: 1, headerAlign: 'center', align: 'center',
+    renderCell: (params) => {
+      return ("GMT"+params.value);
+    }, },
+    { field: "company.id", headerName: "ID de Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
+    renderCell: (params) => {
+      return params.row.company.name;
+    }, },
+  ];
+
   return (
     <Box>
       <Header title="SUCURSALES" subtitle="Lista de Sucursales" />
       <DataTable
         loading={!branches.length}
         rows={branches}
-        columns={[
-          { field: "id", headerName: "ID", flex: 0.5 },
-          { field: "name", headerName: "Nombre", flex: 1 },
-          { field: "direccion", headerName: "Dirección", flex: 1 },
-          { field: "estado", headerName: "Estado", flex: 1 },
-          { field: "pais", headerName: "País", flex: 1 },
-          { field: "latitude", headerName: "Latitud", flex: 1 },
-          { field: "longitude", headerName: "Longitud", flex: 1 },
-          { field: "timeZone", headerName: "Zona Horaria (GMT)", flex: 1 },
-          { field: "company.id", headerName: "ID de Compañía", 
-          renderCell: (params) => {
-            return params.row.company.id;
-          },
-          flex: 1 },
-        ]}
+        columns={columns}
         rowActions={[
           {
             label: "Editar",
@@ -173,34 +206,16 @@ const Branches = () => {
           <DebFormTextInput label={"País"} name={"pais"} />
           <DebFormTextInput label={"Latitud"} name={"latitude"} />
           <DebFormTextInput label={"Longitud"} name={"longitude"} />
-          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={[
-            {label: "GMT-12", value: "-12"},
-            {label: "GMT-11", value: "-11"},
-            {label: "GMT-10", value: "-10"},
-            {label: "GMT-09", value: "-9"},
-            {label: "GMT-08", value: "-8"},
-            {label: "GMT-07", value: "-7"},
-            {label: "GMT-06", value: "-6"},
-            {label: "GMT-05", value: "-5"},
-            {label: "GMT-04", value: "-4"},
-            {label: "GMT-03", value: "-3"},
-            {label: "GMT-02", value: "-2"},
-            {label: "GMT-01", value: "-1"},
-            {label: "GMT", value: "+0"},
-            {label: "GMT+01", value: "+1"},
-            {label: "GMT+02", value: "+2"},
-            {label: "GMT+03", value: "+3"},
-            {label: "GMT+04", value: "+4"},
-            {label: "GMT+05", value: "+5"},
-            {label: "GMT+06", value: "+6"},
-            {label: "GMT+07", value: "+7"},
-            {label: "GMT+08", value: "+8"},
-            {label: "GMT+09", value: "+9"},
-            {label: "GMT+10", value: "+10"},
-            {label: "GMT+11", value: "+11"},
-            {label: "GMT+12", value: "+12"},
-          ]} />
-          <DebFormTextInput label={"Id de Compañía"} name={"company.id"} />
+          <DebFormSelect label={"Zona horaria"} name={"timeZone"} selectOptions={timeZones} />
+          <DebFormSelect
+            label={"Compañía"}
+            name={"company.id"}
+            selectOptions={companies.map((company) => 
+              {return {
+                value: company.id,
+                label: company.name
+              }})}
+            />
           
         </Stack>
       </DebFormModal>
