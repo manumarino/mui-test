@@ -8,22 +8,25 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
-  ListItemText
+  ListItemText,
+  FormHelperText,
 } from "@mui/material";
 import { useField } from "formik";
 import React from "react";
 
 export function DebFormTextInput({ label, ...props }) {
-  const [field, meta] = useField(props);
+  const [field, meta, helper] = useField(props);
+
   return (
     <TextField
+      id={`deb-form-text-input-${props.name}`}
       sx={{ width: "100%" }}
       variant="outlined"
       label={label}
       {...field}
       {...props}
       error={meta.touched && meta.error ? true : false}
-      helperText={meta.error}
+      helperText={meta.touched && meta.error ? meta.error : " "}
     />
   );
 }
@@ -42,10 +45,11 @@ export function DebFormCheckbox({ label, ...props }) {
 
 export function DebFormSelect({ label, selectOptions, ...props }) {
   const [field, meta] = useField(props);
+  const error = meta.touched && meta.error ? true : false;
   return (
     <FormControl fullWidth>
-      <InputLabel>{label}</InputLabel>
-      <Select label={label} {...field} {...props}>
+      <InputLabel error={error}>{label}</InputLabel>
+      <Select id={`deb-from-select-${props.name}`} label={label} {...field} {...props} error={error}>
         {selectOptions.map((option) => {
           return (
             <MenuItem key={option.value} value={option.value}>
@@ -54,6 +58,9 @@ export function DebFormSelect({ label, selectOptions, ...props }) {
           );
         })}
       </Select>
+      <FormHelperText error={error}>
+        {meta.touched && meta.error ? meta.error : " "}
+      </FormHelperText>
     </FormControl>
   );
 }
@@ -66,7 +73,7 @@ export function DebFormMultiSelect({
   ...props
 }) {
   const [field, meta] = useField(props);
-
+  const error = meta.touched && meta.error ? true : false;
   const MenuProps = {
     PaperProps: {
       style: {
@@ -78,11 +85,11 @@ export function DebFormMultiSelect({
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">{label}</InputLabel>
+      <FormControl fullWidth>
+        <InputLabel>{label}</InputLabel>
         <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
+          label={label}
+          id={`deb-from-multi-select-${props.name}`}
           multiple
           input={<OutlinedInput label={label} />}
           renderValue={(selected) =>
@@ -90,7 +97,8 @@ export function DebFormMultiSelect({
           }
           MenuProps={MenuProps}
           {...field}
-          {...props}>
+          {...props}
+          error={error}>
           {selectOptions?.map((option) => (
             <MenuItem key={option.value} value={option}>
               <Checkbox checked={field.value.includes(option)} />
@@ -98,6 +106,9 @@ export function DebFormMultiSelect({
             </MenuItem>
           ))}
         </Select>
+        <FormHelperText error={error}>
+          {meta.touched && meta.error ? meta.error : " "}
+        </FormHelperText>
       </FormControl>
     </div>
   );
@@ -136,16 +147,16 @@ export function formBuilder(fields) {
               />
             );
             break;
-            case "multiSelect":
-              return (
-                <DebFormMultiSelect
-                  key={field.name}
-                  label={field.label}
-                  name={field.name}
-                  selectOptions={field.selectOptions}
-                />
-              );
-              break;
+          case "multiSelect":
+            return (
+              <DebFormMultiSelect
+                key={field.name}
+                label={field.label}
+                name={field.name}
+                selectOptions={field.selectOptions}
+              />
+            );
+            break;
           default:
             break;
         }

@@ -9,6 +9,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
+import { userValidationSchema } from "schemas/user";
 
 const newUserValues = {
   name: "",
@@ -142,7 +143,7 @@ function Users() {
         onReject={closeModal}
         initialValues={modalInitialValues}
         onSubmit={handleSubmit}
-        formikProps={{ enableReinitialize: true }}
+        formikProps={{ enableReinitialize: true , validationSchema: userValidationSchema}}
         headerText={
           modalInitialValues?.id ? "Editar Usuario" : "Crear Usuario"
         }>
