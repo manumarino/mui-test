@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const mobileValidationSchema = Yup.object({
-  urlMobile: Yup.string().url("La URL no es válida").required("URL de Mobile es requerido"),
+  urlMobile: Yup.string().matches(/^((https?:\/\/)|(www.))(?:([a-zA-Z]+)|(\d+\.\d+.\d+.\d+)):\d{4}$/,"La URL no es válida. Debe comenzar con 'http://' o 'www'.").required("URL Mobile es requerido"),
   surveyCompany: Yup.object({ id: Yup.string().required("Compañía de encuestas es requerido") }),
   userMobile: Yup.string().required("Usuario es requerido"),
   passwordMobile: Yup.string()
