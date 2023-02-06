@@ -13,6 +13,8 @@ import { company } from "services/companies";
 import { branch } from "services/branches";
 import {format} from 'date-fns';
 import { licenseValidationSchema } from "schemas/licenses";
+import { GRID_SINGLE_SELECT_COL_DEF } from "@mui/x-data-grid";
+import { Field, useFormikContext } from "formik";
 
 const newLicenseValues = {
   system: "",
@@ -25,6 +27,10 @@ const newLicenseValues = {
 };
 
 const Licenses = () => {
+
+ 
+ 
+
 
   const [modalState, setModalState] = useState(false);
   const [modalInitialValues, setModalInitialValues] = useState(newLicenseValues);
@@ -44,15 +50,35 @@ const Licenses = () => {
     setBranches(await branch.getAll());
   };
 
+  const [companyBranches, setCompanyBranches] = useState([]);
+
 
   useEffect(() => {
     getLicenses();
     getCompanies();
+    getBranches();
   }, []);
- 
+
+  const SelectCompanyId = () => {
+    const { values } = useFormikContext();
+     useEffect(() => {
+      CallBranches(values.company.id)
+  }, [values.company]);
+    return null;
+  };
+
+  const CallBranches = (selectedId) => {
+    
+    setCompanyBranches(
+      branches.filter(branch  =>
+      branch.company.id === selectedId
+      ));
+  }
+  
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
+    console.log(values.branchesList);
     try {
       if (values.id) {
         //estamos editando
@@ -121,6 +147,7 @@ const Licenses = () => {
     }
   };
 
+
   return (
     <Box>
       <Header title="LICENCIAS" subtitle="Lista de Licencias" />
@@ -149,12 +176,6 @@ const Licenses = () => {
                  <span className="table-cell-trucate">{params.value}</span>
             </Tooltip>
         )   },
-          { field: "branchesList", headerName: "Lista de Sucursales", flex: 1,  headerAlign: 'center', align: 'center',
-          renderCell: (params) => (
-            <Tooltip title={params.value} arrow>
-                 <span className="table-cell-trucate">{params.value}</span>
-            </Tooltip>
-        )    }
         ]}
         rowActions={[
           {
@@ -208,7 +229,16 @@ const Licenses = () => {
           ]} />
           <DebFormTextInput label={"Detalles"} name={"details"} />
           <DebDatePickerInput label={"Fecha de expiración"} name={"expired_date"} />
-          
+          <SelectCompanyId/>
+          <DebFormMultiSelect
+            label={"Sucuarsales asociadas"}
+            name={"branchesList"}
+            selectOptions={companyBranches.map((companyBranch) => 
+              {return {
+                value: companyBranch.id,
+                label: companyBranch.name
+              }})}
+            />
         </Stack>
       </DebFormModal>
     </Box>
