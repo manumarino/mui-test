@@ -153,7 +153,7 @@ const Branches = () => {
     renderCell: (params) => {
       return ("GMT"+params.value);
     }, },
-    { field: "company.id", headerName: "ID de Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
+    { field: "company.id", headerName: "Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
     renderCell: (params) => {
       return params.row.company.name;
     }, },
