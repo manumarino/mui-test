@@ -4,7 +4,6 @@ import {
   LightModeOutlined,
   DarkModeOutlined,
   ArrowDropDownOutlined,
-  Language,
   Person,
   Logout,
 } from "@mui/icons-material";
@@ -20,7 +19,6 @@ import {
   Typography,
   ListItemIcon,
   ListItemText,
-  MenuList,
   Divider,
   Avatar,
 } from "@mui/material";
@@ -120,26 +118,6 @@ function MenuNav() {
                   {theme.palette.mode === "dark" ? "Light Mode" : "Dark Mode"}
                 </ListItemText>
               </MenuItem>
-              <Divider></Divider>
-              <MenuItem onClick={() => setShowLangs(!showLangs)}>
-                <ListItemIcon>
-                  <Language sx={{ fontSize: "25px" }}></Language>
-                </ListItemIcon>
-                <ListItemText>{t("LANGUAGE")}</ListItemText>
-              </MenuItem>
-              {showLangs && (
-                <MenuList
-                sx={{color: theme.palette.secondary[200]}}>
-                  {availableLangs.map((lang) => (
-                    <MenuItem
-                      key={lang.key}
-                      onClick={() => i18n.changeLanguage(lang.key)}
-                      sx={{fontSize:"0.75rem"}}>
-                      {lang.label}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              )}
               <Divider></Divider>
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
