@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Box, Stack, TextField, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
-import { DebDatePickerInput, DebFormMultiSelect, DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
+import { DebDatePickerInput, DebFormListener, DebFormMultiSelect, DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
 import DataTable from "components/DataTable";
 import { license } from "services/licenses";
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -13,8 +13,6 @@ import { company } from "services/companies";
 import { branch } from "services/branches";
 import {format} from 'date-fns';
 import { licenseValidationSchema } from "schemas/licenses";
-import { GRID_SINGLE_SELECT_COL_DEF } from "@mui/x-data-grid";
-import { Field, useFormikContext } from "formik";
 
 const newLicenseValues = {
   system: "",
@@ -27,11 +25,6 @@ const newLicenseValues = {
 };
 
 const Licenses = () => {
-
- 
- 
-
-
   const [modalState, setModalState] = useState(false);
   const [modalInitialValues, setModalInitialValues] = useState(newLicenseValues);
 
@@ -45,13 +38,12 @@ const Licenses = () => {
     setCompanies(await company.getAll());
   };
 
-   const [branches, setBranches] = useState([]);
+  const [branches, setBranches] = useState([]);
     const getBranches = async ()  => {
     setBranches(await branch.getAll());
   };
 
   const [companyBranches, setCompanyBranches] = useState([]);
-
 
   useEffect(() => {
     getLicenses();
@@ -59,22 +51,6 @@ const Licenses = () => {
     getBranches();
   }, []);
 
-  const SelectCompanyId = () => {
-    const { values } = useFormikContext();
-     useEffect(() => {
-      CallBranches(values.company.id)
-  }, [values.company]);
-    return null;
-  };
-
-  const CallBranches = (selectedId) => {
-    
-    setCompanyBranches(
-      branches.filter(branch  =>
-      branch.company.id === selectedId
-      ));
-  }
-  
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
@@ -147,6 +123,20 @@ const Licenses = () => {
     }
   };
 
+  const getCompanyIdFromBranchId = (branchId) => {
+    const branch = branches.filter((branch) => {
+      return branch.id === branchId;
+    })[0];
+    return branch.company.id;
+  }
+
+  const handleFormChange = useCallback((values) => {
+    if(values.branchesList.length > 0 && (values.company.id !== getCompanyIdFromBranchId(values.branchesList[0]))) {
+      values.branchesList = [];
+      setModalInitialValues(values);
+    }
+    setCompanyBranches(branches.filter(branch => branch.company.id === values.company.id));
+  },[branches]);
 
   return (
     <Box>
@@ -229,7 +219,6 @@ const Licenses = () => {
           ]} />
           <DebFormTextInput label={"Detalles"} name={"details"} />
           <DebDatePickerInput label={"Fecha de expiración"} name={"expired_date"} />
-          <SelectCompanyId/>
           <DebFormMultiSelect
             label={"Sucuarsales asociadas"}
             name={"branchesList"}
@@ -239,6 +228,7 @@ const Licenses = () => {
                 label: companyBranch.name
               }})}
             />
+          <DebFormListener otraCosa={handleFormChange}/>
         </Stack>
       </DebFormModal>
     </Box>
