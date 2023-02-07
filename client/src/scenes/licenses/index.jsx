@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack, TextField, Tooltip } from "@mui/material";
+import { Box, Stack, Tooltip } from "@mui/material";
 import Header from "components/Header";
 import DebFormModal from "components/DebFormModal";
 import { DebDatePickerInput, DebFormMultiSelect, DebFormSelect, DebFormTextInput } from "components/DebFormComponents";
@@ -10,11 +10,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 import { company } from "services/companies";
+import { branch } from "services/branches";
 import {format} from 'date-fns';
+import { licenseValidationSchema } from "schemas/licenses";
+import { useFormikContext } from "formik";
 
 const newLicenseValues = {
   system: "",
-  expired_date: "",
+  expired_date: null,
   details: "",
   company: {
     id: "",
@@ -36,22 +39,43 @@ const Licenses = () => {
     const getCompanies = async ()  => {
     setCompanies(await company.getAll());
   };
-/*
+
    const [branches, setBranches] = useState([]);
     const getBranches = async ()  => {
-      FILTRAR LO SIGUIENTE
     setBranches(await branch.getAll());
   };
-  */
+
+  const [companyBranches, setCompanyBranches] = useState([]);
+
 
   useEffect(() => {
     getLicenses();
     getCompanies();
+    getBranches();
   }, []);
- 
+
+  const SelectCompanyId = () => {
+    const { values } = useFormikContext();
+     useEffect(() => {
+      CallBranches(values.company.id)
+  }, [values.company]);
+    return null;
+  };
+
+  const CallBranches = (selectedId) => {
+    
+    setCompanyBranches(
+      branches.filter(branch  =>
+      branch.company.id === selectedId
+      ));
+  }
+  
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, error) => {
+    console.log(values.branchesList);
+    console.log(error);
+
     try {
       if (values.id) {
         //estamos editando
@@ -120,6 +144,7 @@ const Licenses = () => {
     }
   };
 
+
   return (
     <Box>
       <Header title="LICENCIAS" subtitle="Lista de Licencias" />
@@ -128,7 +153,7 @@ const Licenses = () => {
         rows={licenses}
         columns={[
           { field: "id", headerName: "ID", flex: 0.1 },
-          { field: "company.id", headerName: "ID de Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
+          { field: "company.id", headerName: "Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
           renderCell: (params) => {
             return params.row.company.name;
           }, },         
@@ -148,12 +173,6 @@ const Licenses = () => {
                  <span className="table-cell-trucate">{params.value}</span>
             </Tooltip>
         )   },
-          { field: "branchesList", headerName: "Lista de Sucursales", flex: 1,  headerAlign: 'center', align: 'center',
-          renderCell: (params) => (
-            <Tooltip title={params.value} arrow>
-                 <span className="table-cell-trucate">{params.value}</span>
-            </Tooltip>
-        )    }
         ]}
         rowActions={[
           {
@@ -186,11 +205,11 @@ const Licenses = () => {
         onReject={closeModal}
         initialValues={modalInitialValues}
         onSubmit={handleSubmit}
-        formikProps={{ enableReinitialize: true }}
+        formikProps={{ enableReinitialize: true, validationSchema: licenseValidationSchema }}
         headerText={
           modalInitialValues?.id ? "Editar Licencia" : "Crear Licencia"
         }>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
         <DebFormSelect
             label={"Compañía"}
             name={"company.id"}
@@ -207,7 +226,16 @@ const Licenses = () => {
           ]} />
           <DebFormTextInput label={"Detalles"} name={"details"} />
           <DebDatePickerInput label={"Fecha de expiración"} name={"expired_date"} />
-          
+          <SelectCompanyId/>
+          <DebFormMultiSelect
+            label={"Sucuarsales asociadas"}
+            name={"branchesList"}
+            selectOptions={companyBranches.map((companyBranch) => 
+              {return {
+                value: companyBranch.id,
+                label: companyBranch.name
+              }})}
+            />
         </Stack>
       </DebFormModal>
     </Box>

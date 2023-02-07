@@ -153,7 +153,7 @@ const Branches = () => {
     renderCell: (params) => {
       return ("GMT"+params.value);
     }, },
-    { field: "company.id", headerName: "ID de Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
+    { field: "company.id", headerName: "Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
     renderCell: (params) => {
       return params.row.company.name;
     }, },
@@ -201,7 +201,7 @@ const Branches = () => {
         headerText={
           modalInitialValues?.id ? "Editar Sucursal" : "Crear Sucursal"
         }>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <DebFormTextInput label={"Nombre"} name={"name"} />
           <DebFormTextInput label={"Dirección"} name={"direccion"} />
           <DebFormTextInput label={"Estado"} name={"estado"} />

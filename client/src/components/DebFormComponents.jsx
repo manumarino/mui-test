@@ -12,7 +12,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { useField, useFormikContext } from "formik";
-import React, {useState} from "react";
+import React from "react";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 export function DebFormTextInput({ label, ...props }) {
@@ -120,8 +120,10 @@ export function DebFormMultiSelect({
 export function DebDatePickerInput({ label, ...props }) {
   const {setFieldValue} = useFormikContext();
   const [field, meta] = useField(props);
+  const error = meta.touched && meta.error ? true : false;
   return (
-    <DatePicker
+    <FormControl>
+      <DatePicker
             label={label}
             {...field}
             {...props}
@@ -130,8 +132,13 @@ export function DebDatePickerInput({ label, ...props }) {
             onChange={val => {
               setFieldValue(field.name, val);
             }}
+            error={error}
             
         />
+        <FormHelperText error={error}>
+          {meta.touched && meta.error ? meta.error : " "}
+        </FormHelperText>
+      </FormControl>
     
   );
 }

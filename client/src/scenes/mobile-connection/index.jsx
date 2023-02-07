@@ -10,6 +10,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
+import { mobileValidationSchema } from "schemas/mobile";
 
 
 const newMobileConnectionValues = {
@@ -120,7 +121,7 @@ const [modalState, setModalState] = useState(false);
         rows={mobileConnections}
         columns={[
           { field: "id", headerName: "ID", flex: 0.1 },
-          { field: "urlMobile", headerName: "URL Móbil", flex: 0.7,
+          { field: "urlMobile", headerName: "URL de Mobile", flex: 0.7,
           renderCell: (params) => (
             <Tooltip title={params.value} arrow>
                  <span className="table-cell-trucate">{params.value}</span>
@@ -168,12 +169,11 @@ const [modalState, setModalState] = useState(false);
         onReject={closeModal}
         initialValues={modalInitialValues}
         onSubmit={handleSubmit}
-        formikProps={{ enableReinitialize: true }}
+        formikProps={{ enableReinitialize: true , validationSchema: mobileValidationSchema }}
         headerText={
           modalInitialValues?.id ? "Editar Conexión" : "Crear Conexión"
         }>
-        <Stack spacing={2}>
-          <DebFormTextInput label={"ID"} name={"id"} />
+        <Stack spacing={1}>
           <DebFormTextInput label={"URL Móbil"} name={"urlMobile"} />
           <DebFormSelect label={"Compañía de encuestas"} name={"surveyCompany.id"} 
            selectOptions={companies.map((surveyCompany) => 

@@ -10,7 +10,7 @@ import {API_LICENSES} from "../constants/urls"
  * @param {string} license.details Detalles de la licencia
  * @param {Object} license.company Compañía a la cual pertenece la sucursal.
  * @param {number} license.company.id Id de la compañía a la cual pertenece la sucursal.
- * @param {Array} license.branchesList Array de objetos sucursales
+ * @param {Object[]} license.branchesList Array de objetos sucursales
  * @returns 
  */
 /*
@@ -42,7 +42,50 @@ export const license ={
                     debqPassword: "TUPACAMARU",
                     timeZone: "+1"
                 },
-                branchesList: []
+                branchesList: [
+                    {
+                        id: 8,
+                        name: "Colegiales",
+                        company: {
+                            id: 1,
+                            name: "Algo",
+                            logo: "/src/Mariano/Tupacamaru",
+                            dominio: "tupacamaru.com",
+                            extension: "tupacamaru",
+                            debqUrl: "http://localhost:8974",
+                            debqUser: "lucas",
+                            debqPassword: "TUPACAMARU",
+                            timeZone: "+1"
+                        },
+                        direccion: "Virre Loreto 3154687",
+                        estado: "Buenos Aires",
+                        pais: "Argentina",
+                        latitude: "-34.5",
+                        longitude: "-55.8",
+                        timeZone: "-3"
+                    },
+                    {
+                        id: 10003,
+                        name: "gdf",
+                        company: {
+                            id: 1,
+                            name: "Algo",
+                            logo: "/src/Mariano/Tupacamaru",
+                            dominio: "tupacamaru.com",
+                            extension: "tupacamaru",
+                            debqUrl: "http://localhost:8974",
+                            debqUser: "lucas",
+                            debqPassword: "TUPACAMARU",
+                            timeZone: "+1"
+                        },
+                        direccion: "gds",
+                        estado: "gs",
+                        pais: "gas",
+                        latitude: "fgf",
+                        longitude: "kj",
+                        timeZone: "-2"
+                    }
+                ]
             },
             {
                 id: 3,
@@ -60,26 +103,51 @@ export const license ={
                     debqPassword: "TUPACAMARU",
                     timeZone: "+1"
                 },
-                branchesList: []
+                branchesList: [
+                    {
+                        id: 8,
+                        name: "Colegiales",
+                        company: {
+                            id: 1,
+                            name: "Algo",
+                            logo: "/src/Mariano/Tupacamaru",
+                            dominio: "tupacamaru.com",
+                            extension: "tupacamaru",
+                            debqUrl: "http://localhost:8974",
+                            debqUser: "lucas",
+                            debqPassword: "TUPACAMARU",
+                            timeZone: "+1"
+                        },
+                        direccion: "Virre Loreto 3154687",
+                        estado: "Buenos Aires",
+                        pais: "Argentina",
+                        latitude: "-34.5",
+                        longitude: "-55.8",
+                        timeZone: "-3"
+                    },
+                    {
+                        id: 10003,
+                        name: "gdf",
+                        company: {
+                            id: 1,
+                            name: "Algo",
+                            logo: "/src/Mariano/Tupacamaru",
+                            dominio: "tupacamaru.com",
+                            extension: "tupacamaru",
+                            debqUrl: "http://localhost:8974",
+                            debqUser: "lucas",
+                            debqPassword: "TUPACAMARU",
+                            timeZone: "+1"
+                        },
+                        direccion: "gds",
+                        estado: "gs",
+                        pais: "gas",
+                        latitude: "fgf",
+                        longitude: "kj",
+                        timeZone: "-2"
+                    }, ],
             },
-            {
-                id: 4,
-                system: "APPOINTMENTS",
-                expired_date: "1923-02-15T04:00:00.000+00:00",
-                details: "kajdbfk",
-                company: {
-                    id: 1,
-                    name: "Algo",
-                    logo: "/src/Mariano/Tupacamaru",
-                    dominio: "tupacamaru.com",
-                    extension: "tupacamaru",
-                    debqUrl: "http://localhost:8974",
-                    debqUser: "lucas",
-                    debqPassword: "TUPACAMARU",
-                    timeZone: "+1"
-                },
-                branchesList: []
-            },
+            
         ])
     },
     create: async (license) => {

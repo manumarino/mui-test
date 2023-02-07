@@ -1,9 +1,7 @@
 import React from 'react';
 import {
-  Box,
-  useTheme
+  Box
 } from "@mui/material";
-import EjemploModal from 'components/EjemploModal';
 
 
 
@@ -14,10 +12,7 @@ const Dashboard = () => {
     <Box>
 
       
-      <EjemploModal 
-      elementoABorrar="EL MODAL"
-      cuando="DESPUES"
-      />
+      
       
     </Box>
   );
