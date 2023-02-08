@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { Box, Stack, TextField, Tooltip } from "@mui/material";
 import Header from "components/Header";
@@ -13,10 +14,11 @@ import { company } from "services/companies";
 import { branch } from "services/branches";
 import {format} from 'date-fns';
 import { licenseValidationSchema } from "schemas/licenses";
+import { useFormikContext } from "formik";
 
 const newLicenseValues = {
   system: "",
-  expired_date: "",
+  expired_date: null,
   details: "",
   company: {
     id: "",
@@ -25,6 +27,7 @@ const newLicenseValues = {
 };
 
 const Licenses = () => {
+
   const [modalState, setModalState] = useState(false);
   const [modalInitialValues, setModalInitialValues] = useState(newLicenseValues);
 
@@ -53,8 +56,10 @@ const Licenses = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, error) => {
     console.log(values.branchesList);
+    console.log(error);
+
     try {
       if (values.id) {
         //estamos editando
@@ -146,7 +151,7 @@ const Licenses = () => {
         rows={licenses}
         columns={[
           { field: "id", headerName: "ID", flex: 0.1 },
-          { field: "company.id", headerName: "ID de Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
+          { field: "company.id", headerName: "Compañía", flex: 1, headerAlign: 'center', align: 'center' ,  
           renderCell: (params) => {
             return params.row.company.name;
           }, },         

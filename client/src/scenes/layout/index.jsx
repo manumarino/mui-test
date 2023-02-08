@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Box, CssBaseline, styled, useMediaQuery, useTheme} from "@mui/material";
 import {Outlet} from "react-router-dom";
-import { useSelector } from 'react-redux';
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import DrawerHeader from 'components/DrawerHeader';
