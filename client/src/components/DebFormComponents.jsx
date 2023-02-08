@@ -12,7 +12,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { useField, useFormikContext } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 export function DebFormTextInput({ label, ...props }) {
@@ -95,16 +95,23 @@ export function DebFormMultiSelect({
           id={`deb-from-multi-select-${props.name}`}
           multiple
           input={<OutlinedInput label={label} />}
-          renderValue={(selected) =>
-            selected.map((elem) => elem.label).join(", ")
-          }
+          renderValue={(selected) => {
+            return selected
+              .map((elem) => {
+                const opt = selectOptions.filter(
+                  (option) => option.value === elem
+                );
+                return opt.length > 0 ? opt[0].label : "";
+              })
+              .join(", ");
+          }}
           MenuProps={MenuProps}
           {...field}
           {...props}
           error={error}>
           {selectOptions?.map((option) => (
-            <MenuItem key={option.value} value={option}>
-              <Checkbox checked={field.value.includes(option)} />
+            <MenuItem key={option.value} value={option.value}>
+              <Checkbox checked={field.value.includes(option.value)} />
               <ListItemText primary={option.label} />
             </MenuItem>
           ))}
@@ -143,6 +150,18 @@ export function DebDatePickerInput({ label, ...props }) {
   );
 }
 
+/**
+ * Listener de cambios para Formik o DebFormModal
+ * El Busca el contexto de Formik y le pasa values a onChange
+ */
+
+export const DebFormListener = ({ otraCosa }) => {
+  const { values } = useFormikContext();
+  useEffect(() => {
+    otraCosa(values);
+  }, [values, otraCosa]);
+  return null;
+};
 
 export function formBuilder(fields) {
   return (
