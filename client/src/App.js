@@ -17,6 +17,7 @@ import i18next from "i18next";
 import { SnackbarProvider } from 'notistack';
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import LoginPage from "./scenes/login";
 
 
 i18next.init({
@@ -43,8 +44,10 @@ function App() {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <CssBaseline />
                 <Routes>
+                  <Route>
+                    <Route path="/" element={<LoginPage />} />
+                  </Route>
                   <Route element={<Layout />}>
-                    <Route path="/" element={<Navigate to="/debdash" replace />} />
                     <Route path="/debdash/*" element={<Dashboard />} />
                     <Route path="/companies/*" element={<Companies />} />
                     <Route path="/branches/*" element={<Branches />} />
